@@ -1,0 +1,6 @@
+{
+  "name": "Soroban Voting dApp",
+  "description": "A decentralized voting platform on Stellar's smart contract platform, Soroban. Features candidate registration, live results, and simulated multi-wallet integrations.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
