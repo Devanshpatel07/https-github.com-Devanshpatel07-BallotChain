@@ -52,21 +52,8 @@ The repository contains two **Rust Soroban Smart Contracts** (a voting contract 
 
 ## 🏗️ Architecture
 
-```
-┌─────────────────────┐        invoke_contract        ┌──────────────────────┐
-│   Voting Contract    │ ─────────────────────────────▶│  Registry Contract    │
-│  - cast_vote()        │◀───validate candidate────────│  - register_candidate │
-│  - initialize()        │                              │  - get_candidates()    │
-│  - has_voted()          │                              │  - is_registered()     │
-│  - emits VoteCast event  │                              │  - emits CandidateAdded│
-└──────────┬───────────┘                                └──────────┬───────────┘
-           │ Soroban RPC (getEvents, simulateTransaction, sendTransaction)
-           ▼
-┌───────────────────────────────────────────────────────────────────┐
-│                      React Frontend (Vite + TS)                     │
-│  WalletConnect │ ContractCode (ABI console) │ LedgerExplorer         │
-│  TimeController │ ResultsChart │ sorobanSim.ts (fallback simulation) │
-└───────────────────────────────────────────────────────────────────┘
+![Uploading image.png…]()
+
 ```
 
 The frontend can run in two modes:
