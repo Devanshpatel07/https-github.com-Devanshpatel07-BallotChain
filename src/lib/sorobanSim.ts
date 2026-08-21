@@ -173,17 +173,30 @@ export class SorobanSimulator {
     this.listeners.forEach(l => l());
   }
 
+  private pollInterval: any = null;
+
   private startTicker() {
     if (this.tickerInterval) return;
+    // Run once immediately
+    this.pollTestnetData();
+    
     this.tickerInterval = setInterval(() => {
       this.tickLedger();
     }, 8000); // Create a new block every 8 seconds
+
+    this.pollInterval = setInterval(() => {
+      this.pollTestnetData();
+    }, 5500); // Poll real Stellar Testnet status every 5.5 seconds
   }
 
   public stopTicker() {
     if (this.tickerInterval) {
       clearInterval(this.tickerInterval);
       this.tickerInterval = null;
+    }
+    if (this.pollInterval) {
+      clearInterval(this.pollInterval);
+      this.pollInterval = null;
     }
   }
 
@@ -257,6 +270,73 @@ export class SorobanSimulator {
     this.saveState();
   }
 
+  private async pollTestnetData() {
+    try {
+      // 1. Fetch latest ledgers
+      const ledgersRes = await fetch('https://horizon-testnet.stellar.org/ledgers?limit=15&order=desc');
+      if (ledgersRes.ok) {
+        const ledgersData = await ledgersRes.json();
+        const records = ledgersData._embedded.records;
+        if (records && records.length > 0) {
+          this.state.currentLedger = records[0].sequence;
+          this.state.ledgers = records.map((r: any) => ({
+            sequence: r.sequence,
+            hash: r.hash,
+            transactionsCount: r.transaction_count,
+            timestamp: new Date(r.closed_at).getTime()
+          }));
+        }
+      }
+
+      // 2. Fetch latest transactions
+      const txRes = await fetch('https://horizon-testnet.stellar.org/transactions?limit=15&order=desc');
+      if (txRes.ok) {
+        const txData = await txRes.json();
+        const records = txData._embedded.records;
+        if (records && records.length > 0) {
+          const realTxs = records.map((r: any) => ({
+            hash: r.hash,
+            ledger: r.ledger,
+            timestamp: new Date(r.created_at).getTime(),
+            status: r.successful ? 'success' as const : 'failed' as const,
+            source: r.source_account,
+            operation: 'stellar_transaction',
+            parameters: { memo: r.memo || 'None', fee_charged: r.fee_charged },
+            events: [],
+            feePaid: parseFloat((r.fee_charged / 10000000).toFixed(6)), // convert stroops to XLM
+            cpuInstructions: 0,
+            ramBytes: 0
+          }));
+
+          const localTxs = this.state.transactions.filter(tx => tx.operation === 'vote' || tx.operation === 'register_candidate');
+          const mergedTxs = [...localTxs, ...realTxs];
+          this.state.transactions = mergedTxs.slice(0, 20);
+        }
+      }
+
+      // 3. Poll connected Freighter wallet balance
+      const connectedWallet = this.getConnectedWallet();
+      if (connectedWallet && connectedWallet.type === 'freighter') {
+        const accountRes = await fetch(`https://horizon-testnet.stellar.org/accounts/${connectedWallet.address}`);
+        if (accountRes.ok) {
+          const accountData = await accountRes.json();
+          const balanceObj = accountData.balances.find((b: any) => b.asset_type === 'native');
+          if (balanceObj) {
+            const realBalance = parseFloat(balanceObj.balance);
+            const targetWallet = this.state.wallets.find(w => w.address === connectedWallet.address);
+            if (targetWallet) {
+              targetWallet.balance = realBalance;
+            }
+          }
+        }
+      }
+
+      this.notify();
+    } catch (e) {
+      console.warn("Stellar Testnet offline or polling failed, using offline simulation cache:", e);
+    }
+  }
+
   // Get current simulated clock time
   public getSimulatedTime(): number {
     return Date.now() + this.state.timeWarpOffset;
@@ -315,46 +395,79 @@ export class SorobanSimulator {
           wallet.connected = true;
           this.saveState();
           resolve(wallet);
-        } else if (type === 'freighter' && typeof window !== 'undefined' && (window as any).freighterApi) {
-          const api = (window as any).freighterApi;
-          api.requestAccess()
-            .then((accessObj: any) => {
-              const pubKey = (accessObj && accessObj.address)
-                ? accessObj.address
-                : (typeof accessObj === 'string' ? accessObj : null);
+        } else if (type === 'freighter') {
+          if (typeof window !== 'undefined' && (window as any).freighterApi) {
+            const api = (window as any).freighterApi;
+            api.requestAccess()
+              .then((accessObj: any) => {
+                const pubKey = (accessObj && accessObj.address)
+                  ? accessObj.address
+                  : (typeof accessObj === 'string' ? accessObj : null);
 
-              if (accessObj && accessObj.error) {
-                throw new Error(accessObj.error);
-              }
+                if (accessObj && accessObj.error) {
+                  throw new Error(accessObj.error);
+                }
 
-              if (!pubKey) {
-                throw new Error("No public key returned from Freighter wallet. Please unlock your Freighter wallet and authorize the site.");
-              }
-              
-              let wallet = this.state.wallets.find(w => w.address === pubKey);
-              if (!wallet) {
-                wallet = {
-                  address: pubKey,
-                  publicKey: pubKey,
-                  balance: 9994.9999, // default to user's real balance context
-                  type: 'freighter',
-                  connected: true
-                };
-                this.state.wallets.push(wallet);
-              } else {
-                wallet.connected = true;
-              }
-              this.saveState();
-              resolve(wallet);
-            })
-            .catch((err: any) => {
-              reject(new Error(err.message || "Failed to retrieve public key from Freighter. Check if it is unlocked."));
-            });
+                if (!pubKey) {
+                  throw new Error("No public key returned from Freighter wallet. Please unlock your Freighter wallet and authorize the site.");
+                }
+
+                // Query their real balance from Stellar Testnet Horizon API
+                fetch(`https://horizon-testnet.stellar.org/accounts/${pubKey}`)
+                  .then(res => res.ok ? res.json() : null)
+                  .then((accountData: any) => {
+                    let realBalance = 100.0;
+                    if (accountData) {
+                      const balanceObj = accountData.balances.find((b: any) => b.asset_type === 'native');
+                      if (balanceObj) realBalance = parseFloat(balanceObj.balance);
+                    }
+                    
+                    let wallet = this.state.wallets.find(w => w.address === pubKey);
+                    if (!wallet) {
+                      wallet = {
+                        address: pubKey,
+                        publicKey: pubKey,
+                        balance: realBalance,
+                        type: 'freighter',
+                        connected: true
+                      };
+                      this.state.wallets.push(wallet);
+                    } else {
+                      wallet.balance = realBalance;
+                      wallet.connected = true;
+                    }
+                    this.saveState();
+                    resolve(wallet);
+                  })
+                  .catch(() => {
+                    let wallet = this.state.wallets.find(w => w.address === pubKey);
+                    if (!wallet) {
+                      wallet = {
+                        address: pubKey,
+                        publicKey: pubKey,
+                        balance: 100.00,
+                        type: 'freighter',
+                        connected: true
+                      };
+                      this.state.wallets.push(wallet);
+                    } else {
+                      wallet.connected = true;
+                    }
+                    this.saveState();
+                    resolve(wallet);
+                  });
+              })
+              .catch((err: any) => {
+                reject(new Error(err.message || "Failed to retrieve public key from Freighter. Check if it is unlocked."));
+              });
+          } else {
+            reject(new Error("Freighter wallet extension was not found. Please install the extension from https://www.freighter.app/ and verify it is enabled in your browser."));
+          }
         } else {
-          // Handle standard extensions (Freighter, Albedo, xBull) fallback
+          // Handle standard extensions (Albedo, xBull) fallback
           // If specifiedAddress, we connect it, otherwise generate a realistic one
           const addr = specifiedAddress || generateStellarAddress(
-            type === 'freighter' ? 'GDFRT' : type === 'albedo' ? 'GDALB' : 'GDBUL'
+            type === 'albedo' ? 'GDALB' : 'GDBUL'
           );
 
           let wallet = this.state.wallets.find(w => w.address === addr);
@@ -417,36 +530,58 @@ export class SorobanSimulator {
   }
 
   // Friendbot faucet tool
-  public fundWallet(address: string): Promise<boolean> {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const wallet = this.state.wallets.find(w => w.address === address);
-        if (wallet) {
-          wallet.balance += 10000;
-          
-          // Log friendbot tx
-          const timestamp = this.getSimulatedTime();
-          const tx: Transaction = {
-            hash: "tx_fund_" + generateHash(55),
-            ledger: this.state.currentLedger,
-            timestamp,
-            status: 'success',
-            source: 'Friendbot_Faucet',
-            operation: 'friendbot_fund',
-            parameters: { destination: address, amount: 10000 },
-            events: [],
-            feePaid: 0,
-            cpuInstructions: 0,
-            ramBytes: 0
-          };
-          this.state.transactions.unshift(tx);
-          this.saveState();
-          resolve(true);
+  public async fundWallet(address: string): Promise<boolean> {
+    try {
+      // Call actual Friendbot
+      const res = await fetch(`https://friendbot.stellar.org/?addr=${encodeURIComponent(address)}`);
+      
+      const wallet = this.state.wallets.find(w => w.address === address);
+      if (wallet) {
+        if (res.ok) {
+          // Fetch updated balance from Horizon
+          const accountRes = await fetch(`https://horizon-testnet.stellar.org/accounts/${address}`);
+          if (accountRes.ok) {
+            const accountData = await accountRes.json();
+            const balanceObj = accountData.balances.find((b: any) => b.asset_type === 'native');
+            if (balanceObj) {
+              wallet.balance = parseFloat(balanceObj.balance);
+            }
+          } else {
+            wallet.balance += 10000;
+          }
         } else {
-          resolve(false);
+          wallet.balance += 10000;
         }
-      }, 800);
-    });
+
+        const timestamp = this.getSimulatedTime();
+        const tx: Transaction = {
+          hash: "tx_fund_" + generateHash(55),
+          ledger: this.state.currentLedger,
+          timestamp,
+          status: 'success',
+          source: 'Friendbot_Faucet',
+          operation: 'friendbot_fund',
+          parameters: { destination: address, amount: 10000 },
+          events: [],
+          feePaid: 0,
+          cpuInstructions: 0,
+          ramBytes: 0
+        };
+        this.state.transactions.unshift(tx);
+        this.saveState();
+        return true;
+      }
+      return false;
+    } catch (e) {
+      // Offline fallback
+      const wallet = this.state.wallets.find(w => w.address === address);
+      if (wallet) {
+        wallet.balance += 10000;
+        this.saveState();
+        return true;
+      }
+      return false;
+    }
   }
 
   // Invoke Soroban: register_candidate
