@@ -114,7 +114,7 @@ export default function DevOpsPanel() {
         </div>
 
         {/* Tab Controls */}
-        <div className="flex bg-zinc-900 border border-zinc-800 p-1 rounded-lg self-start sm:self-auto">
+        <div className="flex flex-wrap gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-lg self-start sm:self-auto">
           <button
             onClick={() => setActiveTab('tests')}
             className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer ${

@@ -173,7 +173,7 @@ export default function WalletConnect({ onWalletConnected }: WalletConnectProps)
                     {truncateAddress(connectedWallet.address)}
                   </span>
                 </div>
-                <h4 className="font-mono text-zinc-100 font-semibold tracking-tight text-base mt-0.5">
+                <h4 className="font-mono text-zinc-100 font-semibold tracking-tight text-sm sm:text-base mt-0.5 break-all select-all">
                   {connectedWallet.address}
                 </h4>
               </div>
