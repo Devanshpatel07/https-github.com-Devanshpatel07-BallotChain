@@ -397,8 +397,12 @@ export class SorobanSimulator {
           this.saveState();
           resolve(wallet);
         } else if (type === 'freighter') {
-          if (typeof window !== 'undefined' && (window as any).freighterApi) {
-            const api = (window as any).freighterApi;
+          const api = typeof window !== 'undefined' && (
+            (window as any).freighterApi || 
+            (window as any).stellarWebKit || 
+            (window as any).freighter
+          );
+          if (api) {
             api.requestAccess()
               .then((accessObj: any) => {
                 const pubKey = (accessObj && accessObj.address)
