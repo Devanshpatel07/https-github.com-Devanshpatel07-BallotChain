@@ -37,18 +37,25 @@ export default function WalletConnect({ onWalletConnected }: WalletConnectProps)
     setIsLoading(true);
     setErrorMsg(null);
     try {
-      // For extensions, simulate errors to make it fully educational if extension is missing!
-      if (type === 'freighter' && !(window as any).freighterApi && Math.random() < 0.2) {
-        throw new Error("Freighter Extension not found. Ensure the Freighter chrome extension is installed and unlocked.");
-      }
       if (type === 'albedo' && Math.random() < 0.25) {
         throw new Error("Albedo request rejected: User dismissed the login popup.");
       }
 
+      const isRealFreighter = type === 'freighter' && typeof window !== 'undefined' && !!(window as any).freighterApi;
+
       await sorobanSimulator.connectWallet(type, address);
       setIsModalOpen(false);
-      setSuccessMsg(`Successfully connected via ${type.toUpperCase()}!`);
-      setTimeout(() => setSuccessMsg(null), 3050);
+
+      if (type === 'freighter') {
+        if (isRealFreighter) {
+          setSuccessMsg(`Successfully connected to your real Freighter Extension wallet!`);
+        } else {
+          setSuccessMsg(`Connected to simulated Freighter vault (sandbox fallback). Install Freighter Chrome Extension to sign live transactions!`);
+        }
+      } else {
+        setSuccessMsg(`Successfully connected via ${type.toUpperCase()}!`);
+      }
+      setTimeout(() => setSuccessMsg(null), 5000);
     } catch (err: any) {
       setErrorMsg(err.message || "Failed to connect wallet.");
     } finally {
