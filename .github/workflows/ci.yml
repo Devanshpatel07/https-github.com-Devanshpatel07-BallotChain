@@ -1,0 +1,48 @@
+name: Soroban Voting Portal CI
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  rust-checks:
+    name: Rust Contract Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Set up Rust Toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          targets: wasm32-unknown-unknown
+
+      - name: Compile Smart Contracts
+        run: cargo build --target wasm32-unknown-unknown --release
+
+      - name: Run Rust Unit Tests
+        run: cargo test
+
+  frontend-checks:
+    name: React Frontend Checks
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Source Code
+        uses: actions/checkout@v4
+
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Install npm dependencies
+        run: npm install
+
+      - name: Run Frontend Tests
+        run: npx vitest run
+
+      - name: Build production bundle
+        run: npm run build
