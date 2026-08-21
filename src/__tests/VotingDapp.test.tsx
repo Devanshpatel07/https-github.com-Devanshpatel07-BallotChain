@@ -1,4 +1,4 @@
-import { describe, test, expect, beforeEach } from 'vitest';
+import { describe, test, expect, beforeEach, vi } from 'vitest';
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import React from 'react';
 import App from '../App';
@@ -9,6 +9,33 @@ describe('Stellar Soroban Voting Portal Frontend Tests', () => {
     localStorage.clear();
     sorobanSimulator.resetAll();
     sorobanSimulator.disconnectWallet();
+
+    // Mock global fetch to respond instantly with simulated ledger/account data during tests
+    global.fetch = vi.fn().mockImplementation((url: string) => {
+      if (url.includes('/accounts/')) {
+        return Promise.resolve({
+          ok: true,
+          json: () => Promise.resolve({
+            balances: [
+              { asset_type: 'native', balance: '450.75' }
+            ]
+          })
+        });
+      }
+      return Promise.resolve({
+        ok: true,
+        json: () => Promise.resolve({
+          _embedded: { records: [] }
+        })
+      });
+    }) as any;
+
+    // Mock window.freighterApi for direct wallet connection flow
+    (window as any).freighterApi = {
+      requestAccess: () => Promise.resolve({
+        address: "GDALICE" + "A".repeat(49) + "ALICE"
+      })
+    };
   });
 
   test('should render the main dashboard layouts and default text', () => {
@@ -21,23 +48,19 @@ describe('Stellar Soroban Voting Portal Frontend Tests', () => {
   test('should successfully connect simulated wallet and update connection state', async () => {
     render(<App />);
     
-    // Open connect wallet modal
+    // Click Connect Wallet to trigger direct mocked connection
     const connectBtn = screen.getByText('Connect Wallet');
     fireEvent.click(connectBtn);
 
-    // Click Sandbox option to connect mock keypair
-    const sandboxTxt = screen.getByText('Simulated Sandbox Vault (Recommended)');
-    fireEvent.click(sandboxTxt);
-
-    // Wait until wallet is connected and modal closes
+    // Wait until wallet is connected and UI updates
     await waitFor(() => {
       expect(screen.getByText('Disconnect')).toBeInTheDocument();
     });
 
-    // Verify it is a simulated wallet and Alice is connected by default
-    expect(screen.getByText('simulated')).toBeInTheDocument();
+    // Verify it is a freighter wallet and Alice is connected
+    expect(screen.getByText(/freighter/i)).toBeInTheDocument();
     expect(screen.getByText(/GDALICE/i)).toBeInTheDocument();
-    expect(screen.getByText('Stellar Testnet Balance')).toBeInTheDocument();
+    expect(screen.getByText(/Stellar Testnet Balance/i)).toBeInTheDocument();
   });
 
   test('should show correct voting callout message when time clock changes', async () => {
@@ -62,8 +85,6 @@ describe('Stellar Soroban Voting Portal Frontend Tests', () => {
     // Connect wallet
     const connectBtn = screen.getByText('Connect Wallet');
     fireEvent.click(connectBtn);
-    const sandboxTxt = screen.getByText('Simulated Sandbox Vault (Recommended)');
-    fireEvent.click(sandboxTxt);
 
     await waitFor(() => {
       expect(screen.getByText('Disconnect')).toBeInTheDocument();

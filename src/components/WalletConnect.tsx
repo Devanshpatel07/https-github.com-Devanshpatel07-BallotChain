@@ -64,11 +64,7 @@ export default function WalletConnect({ onWalletConnected }: WalletConnectProps)
   };
 
   const handleConnectClick = async () => {
-    if (typeof window !== 'undefined' && (window as any).freighterApi) {
-      await handleConnect('freighter');
-    } else {
-      setIsModalOpen(true);
-    }
+    await handleConnect('freighter');
   };
 
   const handleDisconnect = () => {

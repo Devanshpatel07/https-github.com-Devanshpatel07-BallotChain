@@ -271,6 +271,7 @@ export class SorobanSimulator {
   }
 
   private async pollTestnetData() {
+    if (typeof fetch === 'undefined') return;
     try {
       // 1. Fetch latest ledgers
       const ledgersRes = await fetch('https://horizon-testnet.stellar.org/ledgers?limit=15&order=desc');
@@ -413,8 +414,12 @@ export class SorobanSimulator {
                 }
 
                 // Query their real balance from Stellar Testnet Horizon API
-                fetch(`https://horizon-testnet.stellar.org/accounts/${pubKey}`)
-                  .then(res => res.ok ? res.json() : null)
+                const balanceFetch = (typeof fetch !== 'undefined')
+                  ? fetch(`https://horizon-testnet.stellar.org/accounts/${pubKey}`)
+                      .then(res => res.ok ? res.json() : null)
+                  : Promise.resolve(null);
+
+                balanceFetch
                   .then((accountData: any) => {
                     let realBalance = 100.0;
                     if (accountData) {
@@ -533,14 +538,18 @@ export class SorobanSimulator {
   public async fundWallet(address: string): Promise<boolean> {
     try {
       // Call actual Friendbot
-      const res = await fetch(`https://friendbot.stellar.org/?addr=${encodeURIComponent(address)}`);
+      const res = (typeof fetch !== 'undefined')
+        ? await fetch(`https://friendbot.stellar.org/?addr=${encodeURIComponent(address)}`)
+        : { ok: false };
       
       const wallet = this.state.wallets.find(w => w.address === address);
       if (wallet) {
         if (res.ok) {
           // Fetch updated balance from Horizon
-          const accountRes = await fetch(`https://horizon-testnet.stellar.org/accounts/${address}`);
-          if (accountRes.ok) {
+          const accountRes = (typeof fetch !== 'undefined')
+            ? await fetch(`https://horizon-testnet.stellar.org/accounts/${address}`)
+            : null;
+          if (accountRes && accountRes.ok) {
             const accountData = await accountRes.json();
             const balanceObj = accountData.balances.find((b: any) => b.asset_type === 'native');
             if (balanceObj) {
