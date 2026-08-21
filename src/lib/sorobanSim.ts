@@ -317,17 +317,18 @@ export class SorobanSimulator {
           resolve(wallet);
         } else if (type === 'freighter' && typeof window !== 'undefined' && (window as any).freighterApi) {
           const api = (window as any).freighterApi;
-          api.isConnected()
-            .then((connected: boolean) => {
-              if (connected) {
-                return api.getPublicKey();
-              } else {
-                throw new Error("Freighter extension is found but not unlocked. Please unlock your Freighter wallet.");
+          api.requestAccess()
+            .then((accessObj: any) => {
+              const pubKey = (accessObj && accessObj.address)
+                ? accessObj.address
+                : (typeof accessObj === 'string' ? accessObj : null);
+
+              if (accessObj && accessObj.error) {
+                throw new Error(accessObj.error);
               }
-            })
-            .then((pubKey: string) => {
+
               if (!pubKey) {
-                throw new Error("No public key returned from Freighter wallet.");
+                throw new Error("No public key returned from Freighter wallet. Please unlock your Freighter wallet and authorize the site.");
               }
               
               let wallet = this.state.wallets.find(w => w.address === pubKey);
