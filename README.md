@@ -2,16 +2,32 @@
 
 A decentralized, gas-optimized voting platform on Stellar's smart contract platform, **Soroban**. This application enables candidate registration, live polling, and enforces a strict "one-vote-per-wallet" rule within a time-bound election window.
 
-The repository contains two **Rust Soroban Smart Contracts** (a voting contract and a candidate registry contract communicating cross-contract), deployment orchestration scripts, a CI/CD pipeline, and a rich **React frontend client** that includes a simulated Stellar Testnet blockchain environment — letting you interact with on-chain memory states, simulate Friendbot faucets, track gas fees (CPU/RAM metrics), and inspect ledger transaction receipts in real time.
+The repository contains two **Rust Soroban Smart Contracts** (a Voting contract and a Candidate Registry contract communicating cross-contract), deployment orchestration scripts, a CI/CD pipeline, and a rich **React frontend client** that includes a simulated Stellar Testnet blockchain environment — letting you interact with on-chain memory states, simulate Friendbot faucets, track gas fees (CPU/RAM metrics), and inspect ledger transaction receipts in real time.
 
 [![CI](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/ci.yml)
 
-**🔗 Live Demo:** [YOUR_VERCEL_OR_NETLIFY_URL_HERE](#)
-**🎥 Demo Video (1–2 min):** [YOUR_VIDEO_LINK_HERE](#)
+---
+
+## ✅ Submission Checklist
+
+| Requirement | Status | Link / Notes |
+|---|---|---|
+| Public GitHub repository | ☐ | `https://github.com/YOUR_USERNAME/YOUR_REPO` |
+| README with complete documentation | ✅ | This file |
+| Minimum 10+ meaningful commits | ☐ | See [Git Plan](#-git-plan--development-milestones) below |
+| Live demo link | ☐ | [YOUR_VERCEL_OR_NETLIFY_URL_HERE](#) |
+| Contract deployment address | ✅ | See [Deployed Contracts](#-deployed-contracts--transaction-details) |
+| Transaction hash for contract interaction | ✅ | See [Deployed Contracts](#-deployed-contracts--transaction-details) |
+| Screenshot: mobile responsive UI | ☐ | See [Screenshots](#-screenshots) |
+| Screenshot: CI/CD pipeline running | ☐ | See [Screenshots](#-screenshots) |
+| Screenshot: test output, 3+ passing tests | ☐ | See [Screenshots](#-screenshots) |
+| Demo video link (1–2 minutes) | ☐ | [YOUR_VIDEO_LINK_HERE](#) |
+
+> Replace every `☐` with `✅` and fill in the placeholder links/images before final submission.
 
 ---
 
-## 🚀 Deployed Contract & Transaction Details
+## 🚀 Deployed Contracts & Transaction Details
 
 | Item | Value |
 |---|---|
@@ -22,11 +38,23 @@ The repository contains two **Rust Soroban Smart Contracts** (a voting contract 
 
 ---
 
+## 🏗️ Architecture
+
+![Architecture diagram of the Voting contract, Registry contract, Soroban RPC layer, and React frontend](./architecture-diagram.svg)
+
+The frontend can run in two modes:
+1. **Live mode** — talks to the real deployed Testnet contracts above via Soroban RPC.
+2. **Simulated mode** (`src/lib/sorobanSim.ts`) — an in-memory ledger engine used for demos, offline development, and deterministic testing of time-bound logic (via the Time-Warp controller) without spending Testnet resources.
+
+The Voting contract never stores candidate data itself — it calls into the Registry contract via `invoke_contract()` to validate a candidate before accepting a ballot, keeping candidate management as an independently deployed source of truth.
+
+---
+
 ## ✨ Features
 
 - **Multi-Wallet Integration**: Supports Albedo, Freighter, xBull, and an interactive **Simulated Keypair Vault**. Automatically detects and handles extension-not-found states and rejected signature request exceptions, with dedicated UI error states for each failure mode.
-- **On-Chain Candidate Registration**: Users invoke `register_candidate` directly on the **Registry contract**, which the **Voting contract** calls cross-contract to validate eligible candidates before accepting ballots — appending candidate data to Soroban *Instance Storage* and expending simulated network storage fees.
-- **Inter-Contract Communication**: The Voting contract and Registry contract are deployed independently and communicate via `Env::invoke_contract`, keeping candidate management as a separate source of truth from vote tallying.
+- **On-Chain Candidate Registration**: Users invoke `register_candidate` directly on the **Registry contract**, appending candidate data to Soroban *Instance Storage* and expending simulated network storage fees.
+- **Inter-Contract Communication**: The Voting contract and Registry contract are deployed independently and communicate via `Env::invoke_contract`.
 - **Cryptographic Vote Signing**: Enforces unique, cryptographically signed ballots using `require_auth()` macros to confirm voter identity.
 - **Time-Bound Voting Windows**: State interactions are restricted to active block sequences. The contract panics and rejects transactions submitted outside of specified `startTime` and `endTime` boundaries.
 - **Event Streaming**: Both contracts emit Soroban events (`env.events().publish(...)`) on candidate registration, vote cast, and election state changes. The frontend polls `getEvents` via RPC to reflect on-chain activity in near real time.
@@ -47,18 +75,6 @@ The repository contains two **Rust Soroban Smart Contracts** (a voting contract 
 - **Smart Contracts**: Rust, `soroban-sdk`
 - **Testing**: `cargo test` (contracts), Vitest + React Testing Library (frontend)
 - **CI/CD**: GitHub Actions
-
----
-
-## 🏗️ Architecture
-
-![Uploading image.png…]()
-
-```
-
-The frontend can run in two modes:
-1. **Live mode** — talks to the real deployed Testnet contracts above via Soroban RPC.
-2. **Simulated mode** (`src/lib/sorobanSim.ts`) — an in-memory ledger engine used for demos, offline development, and deterministic testing of time-bound logic (via the Time-Warp controller) without spending Testnet resources.
 
 ---
 
@@ -95,6 +111,7 @@ The frontend can run in two modes:
 ├── /.github
 │   └── /workflows
 │       └── ci.yml             # GitHub Actions CI/CD pipeline
+├── architecture-diagram.svg   # Architecture diagram used above
 ├── Cargo.toml                 # Root Cargo workspace config
 ├── .env.example                # Environment file template
 ├── package.json                 # Dependency configurations
@@ -153,8 +170,6 @@ npm run test
 ```
 Covers: wallet connection and error states, vote submission, time-window boundary behavior, and results rendering.
 
-> 📸 *Attach a screenshot of test output showing 3+ passing tests here.*
-
 ---
 
 ## 🔁 CI/CD
@@ -164,8 +179,6 @@ Every push and pull request triggers `.github/workflows/ci.yml`, which:
 2. Runs `cargo test` for both contracts
 3. Installs frontend dependencies and runs the Vitest suite
 4. Runs a production build (`npm run build`) to catch build-time errors
-
-> 📸 *Attach a screenshot of a passing GitHub Actions run here.*
 
 ---
 
@@ -221,8 +234,21 @@ soroban contract invoke \
 3. Select your repository and choose **Vite** as the framework preset.
 4. Add environment variables `GEMINI_API_KEY` and `APP_URL`.
 5. Click **Deploy**. Vercel will build your static files from `dist/` and host them on serverless edges.
+6. Paste the resulting URL into the [Submission Checklist](#-submission-checklist) above.
 
-> 📸 *Attach a screenshot showing the mobile-responsive UI here.*
+---
+
+## 📸 Screenshots
+
+| Mobile Responsive UI | CI/CD Passing | Test Output (3+ passing) |
+|---|---|---|
+| `![mobile](./screenshots/mobile.png)` | `![ci](./screenshots/ci-pipeline.png)` | `![tests](./screenshots/test-output.png)` |
+
+> Add your screenshot files to a `/screenshots` folder in the repo root and swap the placeholder paths above with the real filenames — GitHub will render them inline once committed.
+
+## 🎥 Demo Video
+
+`YOUR_VIDEO_LINK_HERE` — a 1–2 minute walkthrough covering: wallet connection, candidate registration, casting a vote, the results chart updating live, and the CI pipeline passing.
 
 ---
 
@@ -259,18 +285,3 @@ soroban contract invoke \
 - Integrate the clock-warp temporal bounds testing card.
 - Deploy contracts to Testnet and the frontend to Vercel.
 - Author the comprehensive `README.md` with real deployment addresses, CI badge, architecture diagram, and screenshots/video links.
-
----
-
-## 📋 Submission Checklist
-
-- [x] Public GitHub repository
-- [x] README with complete documentation
-- [ ] Minimum 10+ meaningful commits
-- [ ] Live demo link
-- [x] Contract deployment address (Voting + Registry)
-- [x] Transaction hash for contract interaction
-- [ ] Screenshot: mobile responsive UI
-- [ ] Screenshot: CI/CD pipeline running
-- [ ] Screenshot: test output with 3+ passing tests
-- [ ] Demo video link (1–2 minutes)
