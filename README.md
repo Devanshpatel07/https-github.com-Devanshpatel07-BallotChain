@@ -4,7 +4,7 @@ A decentralized, gas-optimized voting platform on Stellar's smart contract platf
 
 The repository contains two **Rust Soroban Smart Contracts** (a Voting contract and a Candidate Registry contract communicating cross-contract), deployment orchestration scripts, a CI/CD pipeline, and a rich **React frontend client** that includes a simulated Stellar Testnet blockchain environment — letting you interact with on-chain memory states, simulate Friendbot faucets, track gas fees (CPU/RAM metrics), and inspect ledger transaction receipts in real time.
 
-[![CI](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/ci.yml)
+
 
 **🔗 Live Demo:** [ballot-chain1.vercel.app](https://ballot-chain1.vercel.app/)
 
