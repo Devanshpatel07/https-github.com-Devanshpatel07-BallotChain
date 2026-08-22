@@ -4,6 +4,10 @@ A decentralized, gas-optimized voting platform on Stellar's smart contract platf
 
 The repository contains two **Rust Soroban Smart Contracts** (a Voting contract and a Candidate Registry contract communicating cross-contract), deployment orchestration scripts, a CI/CD pipeline, and a rich **React frontend client** that includes a simulated Stellar Testnet blockchain environment — letting you interact with on-chain memory states, simulate Friendbot faucets, track gas fees (CPU/RAM metrics), and inspect ledger transaction receipts in real time.
 
+[![CI](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/ci.yml/badge.svg)](https://github.com/YOUR_USERNAME/YOUR_REPO/actions/workflows/ci.yml)
+
+**🔗 Live Demo:** [ballot-chain1.vercel.app](https://ballot-chain1.vercel.app/)
+
 ---
 
 ## ✅ Submission Checklist
@@ -13,7 +17,7 @@ The repository contains two **Rust Soroban Smart Contracts** (a Voting contract 
 | Public GitHub repository | ☐ | `https://github.com/YOUR_USERNAME/YOUR_REPO` |
 | README with complete documentation | ✅ | This file |
 | Minimum 10+ meaningful commits | ☐ | See [Git Plan](#-git-plan--development-milestones) below |
-| Live demo link | ☐ | [YOUR_VERCEL_OR_NETLIFY_URL_HERE](#) |
+| Live demo link | ✅ | [ballot-chain1.vercel.app](https://ballot-chain1.vercel.app/) |
 | Contract deployment address | ✅ | See [Deployed Contracts](#-deployed-contracts--transaction-details) |
 | Transaction hash for contract interaction | ✅ | See [Deployed Contracts](#-deployed-contracts--transaction-details) |
 | Screenshot: mobile responsive UI | ☐ | See [Screenshots](#-screenshots) |
@@ -234,6 +238,8 @@ soroban contract invoke \
 5. Click **Deploy**. Vercel will build your static files from `dist/` and host them on serverless edges.
 6. Paste the resulting URL into the [Submission Checklist](#-submission-checklist) above.
 
+**Live instance:** [https://ballot-chain1.vercel.app/](https://ballot-chain1.vercel.app/)
+
 ---
 
 ## 📸 Screenshots
@@ -246,7 +252,7 @@ soroban contract invoke \
 
 ## 🎥 Demo Video
 
-`YOUR_VIDEO_LINK_HERE` — a 1–2 minute walkthrough covering: wallet connection, candidate registration, casting a vote, the results chart updating live, and the CI pipeline passing.
+`YOUR_VIDEO_LINK_HERE` — a 1–2 minute walkthrough of the live app at [ballot-chain1.vercel.app](https://ballot-chain1.vercel.app/) covering: wallet connection, candidate registration, casting a vote, the results chart updating live, and the CI pipeline passing.
 
 ---
 
