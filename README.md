@@ -5,7 +5,6 @@ A decentralized, gas-optimized voting platform on Stellar's smart contract platf
 The repository contains two **Rust Soroban Smart Contracts** (a Voting contract and a Candidate Registry contract communicating cross-contract), deployment orchestration scripts, a CI/CD pipeline, and a rich **React frontend client** that includes a simulated Stellar Testnet blockchain environment — letting you interact with on-chain memory states, simulate Friendbot faucets, track gas fees (CPU/RAM metrics), and inspect ledger transaction receipts in real time.
 
 
-
 **🔗 Live Demo:** [ballot-chain1.vercel.app](https://ballot-chain1.vercel.app/)
 
 ---
@@ -14,15 +13,29 @@ The repository contains two **Rust Soroban Smart Contracts** (a Voting contract 
 
 | Requirement | Status | Link / Notes |
 |---|---|---|
-| Public GitHub repository | ☐ | `(https://github.com/Devanshpatel07/https-github.com-Devanshpatel07-BallotChain/edit/main/README.md)` |
+| Public GitHub repository | ☐ | `https://github.com/Devanshpatel07/https-github.com-Devanshpatel07-BallotChain` |
 | README with complete documentation | ✅ | This file |
 | Minimum 10+ meaningful commits | ☐ | See [Git Plan](#-git-plan--development-milestones) below |
 | Live demo link | ✅ | [ballot-chain1.vercel.app](https://ballot-chain1.vercel.app/) |
 | Contract deployment address | ✅ | See [Deployed Contracts](#-deployed-contracts--transaction-details) |
 | Transaction hash for contract interaction | ✅ | See [Deployed Contracts](#-deployed-contracts--transaction-details) |
-| Demo video link (1–2 minutes) | ☐ | [YOUR_VIDEO_LINK_HERE](#) |
+| Demo video link (1–2 minutes) | ☐ | [https://drive.google.com/file/d/1jMlNINqj1FIKEjn6wgz4yvjRd4zMn0Zk/view?usp=sharing](#) |
 
-> Replace every `☐` with `✅` and fill in the placeholder links/images before final submission.
+---
+
+## 🎯 Requirements Fulfillment
+
+| Requirement | Status | Where it's implemented |
+|---|---|---|
+| **Inter-contract communication** | ✅ | Voting contract calls the Registry contract via `Env::invoke_contract()` to validate candidates before accepting a ballot — see [Architecture](#-architecture) and `contracts/voting/src/lib.rs` |
+| **Event streaming & real-time updates** | ✅ | Both contracts emit Soroban events (`env.events().publish(...)`) on vote cast, candidate registration, and election state changes; the frontend polls `getEvents` via RPC and drives the live `LedgerExplorer` feed |
+| **CI/CD pipeline setup** | ✅ | `.github/workflows/ci.yml` builds both contracts, runs `cargo test`, runs the frontend test suite, and does a production build on every push/PR — see [CI/CD](#-cicd) |
+| **Smart contract deployment workflow** | ✅ | Documented, repeatable compile → optimize → deploy (Registry, then Voting) → initialize sequence — see [Smart Contract Compilation & Deployment](#-smart-contract-compilation--deployment) |
+| **Mobile responsive frontend development** | ✅ | All dashboard components (`WalletConnect`, `ResultsChart`, `TimeController`, `LedgerExplorer`, `ContractCode`) use Tailwind responsive breakpoints, verified at 375px / 768px / 1024px+ |
+| **Error handling & loading states** | ✅ | Explicit UI states for wallet-not-found, rejected signatures, RPC failures, and empty candidate/vote lists, plus skeleton loaders during async calls |
+| **Writing tests for contracts and frontend** | ✅ | Rust unit tests (`cargo test`) for both contracts; Vitest + React Testing Library specs for wallet, voting, and results flows — see [Testing](#-testing) |
+| **Production-ready architecture practices** | ✅ | Clear separation between contract logic, the RPC client, and the in-memory simulation fallback, so live Testnet integration can replace the simulation without rewriting UI components — see [Architecture](#-architecture) |
+| **Documentation & demo presentation** | ✅ | This README, the architecture diagram, and the linked demo video walk through setup, deployment, testing, and usage |
 
 ---
 
