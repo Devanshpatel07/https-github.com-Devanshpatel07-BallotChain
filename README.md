@@ -13,13 +13,13 @@ The repository contains two **Rust Soroban Smart Contracts** (a Voting contract 
 
 | Requirement | Status | Link / Notes |
 |---|---|---|
-| Public GitHub repository | ☐ | `https://github.com/Devanshpatel07/https-github.com-Devanshpatel07-BallotChain` |
+| Public GitHub repository | ✅ | `https://github.com/Devanshpatel07/https-github.com-Devanshpatel07-BallotChain` |
 | README with complete documentation | ✅ | This file |
-| Minimum 10+ meaningful commits | ☐ | See [Git Plan](#-git-plan--development-milestones) below |
+| Minimum 10+ meaningful commits | ✅ | See [Git Plan](#-git-plan--development-milestones) below |
 | Live demo link | ✅ | [ballot-chain1.vercel.app](https://ballot-chain1.vercel.app/) |
 | Contract deployment address | ✅ | See [Deployed Contracts](#-deployed-contracts--transaction-details) |
 | Transaction hash for contract interaction | ✅ | See [Deployed Contracts](#-deployed-contracts--transaction-details) |
-| Demo video link (1–2 minutes) | ☐ | [https://drive.google.com/file/d/1jMlNINqj1FIKEjn6wgz4yvjRd4zMn0Zk/view?usp=sharing](#) |
+| Demo video link (1–2 minutes) | ✅ | [https://drive.google.com/file/d/1jMlNINqj1FIKEjn6wgz4yvjRd4zMn0Zk/view?usp=sharing](#) |
 
 ---
 
