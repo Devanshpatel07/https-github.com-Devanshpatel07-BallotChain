@@ -7,6 +7,9 @@ A decentralized, gas-optimized voting platform built on Stellar's smart contract
 
 The repository features two **Rust Soroban Smart Contracts** (a Voting contract and a Candidate Registry contract communicating cross-contract via `Env::invoke_contract()`), automated build/deployment orchestration scripts, a CI/CD pipeline, and a modern **React 19 frontend client** with direct Freighter wallet integration and an interactive simulated Soroban VM state environment.
 
+
+**🔗 Live Demo:** [ballot-chain1.vercel.app](https://ballot-chain1.vercel.app/)
+
 ---
 
 ## 📋 Submission Checklist
@@ -268,6 +271,8 @@ To deploy your own fork:
 3. Select **Vite** as the Framework Preset.
 4. Set the Build Command to `npm run build` and Output Directory to `dist`.
 5. Deploy! `vercel.json` will ensure proper SPA routing for sub-routes.
+
+**Live instance:** [https://ballot-chain1.vercel.app/](https://ballot-chain1.vercel.app/)
 
 ---
 
