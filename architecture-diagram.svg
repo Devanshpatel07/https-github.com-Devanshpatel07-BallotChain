@@ -1,0 +1,161 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 900 520" width="100%" height="100%">
+  <defs>
+    <!-- Dark Background Gradient -->
+    <linearGradient id="bg-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0d1117"/>
+      <stop offset="100%" stop-color="#161b22"/>
+    </linearGradient>
+
+    <!-- Component Box Gradients -->
+    <linearGradient id="react-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1f293d"/>
+      <stop offset="100%" stop-color="#111827"/>
+    </linearGradient>
+
+    <linearGradient id="rpc-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#2d2238"/>
+      <stop offset="100%" stop-color="#17101f"/>
+    </linearGradient>
+
+    <linearGradient id="contract-voting-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#1c332b"/>
+      <stop offset="100%" stop-color="#0d211a"/>
+    </linearGradient>
+
+    <linearGradient id="contract-registry-grad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#382d1c"/>
+      <stop offset="100%" stop-color="#21180d"/>
+    </linearGradient>
+
+    <!-- Glow & Shadow Filters -->
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="4" stdDeviation="6" flood-color="#000000" flood-opacity="0.5"/>
+    </filter>
+
+    <filter id="glow-cyan" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="3" result="blur"/>
+      <feComposite in="SourceGraphic" in2="blur" operator="over"/>
+    </filter>
+
+    <!-- Arrow Marker Defs -->
+    <marker id="arrow-cyan" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#38bdf8"/>
+    </marker>
+    
+    <marker id="arrow-purple" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#c084fc"/>
+    </marker>
+
+    <marker id="arrow-green" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#4ade80"/>
+    </marker>
+
+    <marker id="arrow-amber" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="#fbbf24"/>
+    </marker>
+  </defs>
+
+  <style>
+    .title { font-family: system-ui, -apple-system, sans-serif; font-weight: 700; fill: #f3f4f6; font-size: 20px; }
+    .subtitle { font-family: system-ui, -apple-system, sans-serif; font-size: 13px; fill: #9ca3af; }
+    .box-title { font-family: system-ui, -apple-system, sans-serif; font-weight: 600; font-size: 15px; }
+    .box-sub { font-family: system-ui, -apple-system, sans-serif; font-size: 12px; fill: #9ca3af; }
+    .code-text { font-family: monospace; font-size: 12px; font-weight: 600; }
+    .conn-label { font-family: system-ui, -apple-system, sans-serif; font-size: 11px; font-weight: 500; fill: #cbd5e1; }
+  </style>
+
+  <!-- Canvas Background -->
+  <rect width="100%" height="100%" fill="url(#bg-grad)"/>
+  <rect x="1" y="1" width="898" height="518" rx="12" fill="none" stroke="#30363d" stroke-width="2"/>
+
+  <!-- Diagram Title -->
+  <text x="30" y="42" class="title">Stellar Soroban Voting dApp Architecture</text>
+  <text x="30" y="62" class="subtitle">Multi-Contract Cross-Communication &amp; RPC Data Flow Architecture</text>
+
+  <!-- 1. Frontend Layer -->
+  <g transform="translate(40, 100)" filter="url(#shadow)">
+    <rect width="240" height="360" rx="10" fill="url(#react-grad)" stroke="#38bdf8" stroke-width="2"/>
+    <text x="20" y="32" class="box-title" fill="#38bdf8">React 19 Frontend</text>
+    <text x="20" y="50" class="box-sub">Client UI &amp; State Manager</text>
+    
+    <rect x="15" y="70" width="210" height="55" rx="6" fill="#0f172a" stroke="#1e293b"/>
+    <text x="25" y="92" class="box-title" fill="#f8fafc" font-size="13px">Freighter Wallet API</text>
+    <text x="25" y="110" class="box-sub">Ed25519 Keypair / Auth</text>
+
+    <rect x="15" y="140" width="210" height="55" rx="6" fill="#0f172a" stroke="#1e293b"/>
+    <text x="25" y="162" class="box-title" fill="#f8fafc" font-size="13px">Soroban Simulation Engine</text>
+    <text x="25" y="180" class="box-sub">Local Fallback / Standalone</text>
+
+    <rect x="15" y="210" width="210" height="55" rx="6" fill="#0f172a" stroke="#1e293b"/>
+    <text x="25" y="232" class="box-title" fill="#f8fafc" font-size="13px">TimeController &amp; Stream</text>
+    <text x="25" y="250" class="box-sub">Polling &amp; Event Listeners</text>
+
+    <rect x="15" y="280" width="210" height="60" rx="6" fill="#0f172a" stroke="#1e293b"/>
+    <text x="25" y="302" class="box-title" fill="#f8fafc" font-size="13px">Component Tree</text>
+    <text x="25" y="322" class="box-sub">VotingDapp, LedgerExplorer</text>
+  </g>
+
+  <!-- 2. Soroban RPC Layer -->
+  <g transform="translate(340, 100)" filter="url(#shadow)">
+    <rect width="220" height="360" rx="10" fill="url(#rpc-grad)" stroke="#c084fc" stroke-width="2"/>
+    <text x="20" y="32" class="box-title" fill="#c084fc">Soroban RPC Layer</text>
+    <text x="20" y="50" class="box-sub">Stellar Testnet Horizon / RPC</text>
+
+    <rect x="15" y="80" width="190" height="70" rx="6" fill="#1e102a" stroke="#3b0764"/>
+    <text x="25" y="105" class="box-title" fill="#e9d5ff" font-size="13px">simulateTransaction()</text>
+    <text x="25" y="125" class="box-sub">Pre-flight Footprint Read</text>
+
+    <rect x="15" y="175" width="190" height="70" rx="6" fill="#1e102a" stroke="#3b0764"/>
+    <text x="25" y="200" class="box-title" fill="#e9d5ff" font-size="13px">sendTransaction()</text>
+    <text x="25" y="220" class="box-sub">Tx Submission &amp; Broadcaster</text>
+
+    <rect x="15" y="270" width="190" height="70" rx="6" fill="#1e102a" stroke="#3b0764"/>
+    <text x="25" y="295" class="box-title" fill="#e9d5ff" font-size="13px">getEvents() Stream</text>
+    <text x="25" y="315" class="box-sub">Real-time Topic Polling</text>
+  </g>
+
+  <!-- 3. Smart Contracts (Stellar On-Chain) -->
+  <!-- 3a. Voting Contract -->
+  <g transform="translate(620, 100)" filter="url(#shadow)">
+    <rect width="240" height="170" rx="10" fill="url(#contract-voting-grad)" stroke="#4ade80" stroke-width="2"/>
+    <text x="20" y="30" class="box-title" fill="#4ade80">Voting Smart Contract</text>
+    <text x="20" y="48" class="box-sub">CCVOTINGDAPP2026...7777</text>
+    
+    <rect x="15" y="60" width="210" height="95" rx="6" fill="#06150f" stroke="#14532d"/>
+    <text x="25" y="80" class="code-text" fill="#86efac">pub fn vote(...)</text>
+    <text x="25" y="98" class="code-text" fill="#86efac">pub fn register_candidate(...)</text>
+    <text x="25" y="116" class="code-text" fill="#86efac">pub fn get_state(...)</text>
+    <text x="25" y="134" class="box-sub">State: Title, Window, Voted(Address)</text>
+  </g>
+
+  <!-- 3b. Candidate Registry Contract -->
+  <g transform="translate(620, 290)" filter="url(#shadow)">
+    <rect width="240" height="170" rx="10" fill="url(#contract-registry-grad)" stroke="#fbbf24" stroke-width="2"/>
+    <text x="20" y="30" class="box-title" fill="#fbbf24">Candidate Registry Contract</text>
+    <text x="20" y="48" class="box-sub">CDREGISTRYCONTRACT2026...7777</text>
+
+    <rect x="15" y="60" width="210" height="95" rx="6" fill="#191207" stroke="#78350f"/>
+    <text x="25" y="80" class="code-text" fill="#fde047">pub fn register(...)</text>
+    <text x="25" y="98" class="code-text" fill="#fde047">pub fn increment_votes(...)</text>
+    <text x="25" y="116" class="code-text" fill="#fde047">pub fn get_candidates(...)</text>
+    <text x="25" y="134" class="box-sub">Storage: Map&lt;u32, Candidate&gt;</text>
+  </g>
+
+  <!-- CONNECTORS / ARROWS -->
+  <!-- 1. Frontend <-> Soroban RPC -->
+  <path d="M 280 200 L 340 200" stroke="#38bdf8" stroke-width="2" marker-end="url(#arrow-cyan)"/>
+  <text x="288" y="192" class="conn-label">RPC Call</text>
+  
+  <path d="M 340 260 L 280 260" stroke="#c084fc" stroke-width="2" marker-end="url(#arrow-purple)"/>
+  <text x="286" y="275" class="conn-label">Events/State</text>
+
+  <!-- 2. Soroban RPC <-> Voting Contract -->
+  <path d="M 560 185 L 620 185" stroke="#4ade80" stroke-width="2" marker-end="url(#arrow-green)"/>
+  <text x="568" y="177" class="conn-label">Invoke / Query</text>
+
+  <!-- 3. Cross-Contract Call: Voting Contract -> Candidate Registry Contract -->
+  <path d="M 740 270 L 740 290" stroke="#fbbf24" stroke-width="2.5" stroke-dasharray="4,4" marker-end="url(#arrow-amber)"/>
+  <rect x="685" y="267" width="110" height="18" rx="3" fill="#1e1b18" stroke="#78350f"/>
+  <text x="690" y="280" font-family="monospace" font-size="10px" fill="#fbbf24">Env::invoke_contract()</text>
+
+</svg>
