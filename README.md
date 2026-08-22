@@ -290,7 +290,7 @@ To deploy your own fork:
 
 ## 🎥 Demo Video
 
-[![Demo Video Placeholder]([https://img.shields.io/badge/Demo--Video-Watch%20Walkthrough-red?style=for-the-badge&logo=youtube](https://drive.google.com/file/d/1jMlNINqj1FIKEjn6wgz4yvjRd4zMn0Zk/view?usp=sharing))](https://drive.google.com/drive/u/0/home)
+[![Demo Video Placeholder]((https://drive.google.com/file/d/1jMlNINqj1FIKEjn6wgz4yvjRd4zMn0Zk/view?usp=sharing))]
 
 > **Video Walkthrough Guide (1–2 minutes)**:
 > 1. **Wallet Connection**: Show connecting with Freighter wallet and fetching testnet XLM balance.
