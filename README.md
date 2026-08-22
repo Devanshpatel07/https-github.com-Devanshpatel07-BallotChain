@@ -14,15 +14,12 @@ The repository contains two **Rust Soroban Smart Contracts** (a Voting contract 
 
 | Requirement | Status | Link / Notes |
 |---|---|---|
-| Public GitHub repository | ☐ | `https://github.com/YOUR_USERNAME/YOUR_REPO` |
+| Public GitHub repository | ☐ | `(https://github.com/Devanshpatel07/https-github.com-Devanshpatel07-BallotChain/edit/main/README.md)` |
 | README with complete documentation | ✅ | This file |
 | Minimum 10+ meaningful commits | ☐ | See [Git Plan](#-git-plan--development-milestones) below |
 | Live demo link | ✅ | [ballot-chain1.vercel.app](https://ballot-chain1.vercel.app/) |
 | Contract deployment address | ✅ | See [Deployed Contracts](#-deployed-contracts--transaction-details) |
 | Transaction hash for contract interaction | ✅ | See [Deployed Contracts](#-deployed-contracts--transaction-details) |
-| Screenshot: mobile responsive UI | ☐ | See [Screenshots](#-screenshots) |
-| Screenshot: CI/CD pipeline running | ☐ | See [Screenshots](#-screenshots) |
-| Screenshot: test output, 3+ passing tests | ☐ | See [Screenshots](#-screenshots) |
 | Demo video link (1–2 minutes) | ☐ | [YOUR_VIDEO_LINK_HERE](#) |
 
 > Replace every `☐` with `✅` and fill in the placeholder links/images before final submission.
