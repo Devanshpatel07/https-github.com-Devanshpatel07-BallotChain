@@ -61,46 +61,46 @@ export default function LedgerExplorer() {
   };
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden" id="stellar-ledger-explorer">
+    <div className="mc-gui-panel overflow-hidden" id="stellar-ledger-explorer">
       {/* Header */}
-      <div className="p-6 bg-zinc-950 border-b border-zinc-850 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-6 bg-[#252525] border-b-4 border-black flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-indigo-950 text-indigo-400 border border-indigo-800/60 rounded-xl">
+          <div className="p-2 bg-black border-2 border-black text-[#5c9e31]">
             <Activity className="w-5 h-5 animate-pulse" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
+            <h3 className="mc-title text-[#ffffff] flex items-center gap-2 mb-1">
               Stellar Testnet Explorer
-              <span className="px-2 py-0.5 bg-emerald-950 border border-emerald-800 text-[9px] text-emerald-400 font-bold rounded uppercase tracking-wider">
-                live network
+              <span className="mc-pixel-font text-[8px] bg-black border-2 border-[#5c9e31] text-[#8ce25d] px-2 py-0.5 uppercase ml-1">
+                live
               </span>
             </h3>
-            <p className="text-xs text-zinc-400">Inspect real-time blocks, transactions, gas fees, and contract events.</p>
+            <p className="text-sm text-[#aaaaaa]">Inspect real-time blocks, transactions, gas fees, and contract events.</p>
           </div>
         </div>
 
         {/* Tab Controls */}
-        <div className="flex bg-zinc-900 border border-zinc-800 p-1 rounded-lg self-start sm:self-auto">
+        <div className="flex bg-black border-2 border-black p-1 self-start sm:self-auto gap-0.5">
           <button
             onClick={() => setActiveTab('transactions')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
-              activeTab === 'transactions' ? 'bg-zinc-800 text-zinc-100' : 'text-zinc-400 hover:text-zinc-200'
+            className={`mc-pixel-font text-[8px] px-2.5 py-1.5 transition-all cursor-pointer ${
+              activeTab === 'transactions' ? 'bg-[#5c9e31] text-white' : 'text-zinc-400 hover:text-zinc-200'
             }`}
           >
             Transactions
           </button>
           <button
             onClick={() => setActiveTab('events')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
-              activeTab === 'events' ? 'bg-zinc-800 text-zinc-100' : 'text-zinc-400 hover:text-zinc-200'
+            className={`mc-pixel-font text-[8px] px-2.5 py-1.5 transition-all cursor-pointer ${
+              activeTab === 'events' ? 'bg-[#5c9e31] text-white' : 'text-zinc-400 hover:text-zinc-200'
             }`}
           >
-            Contract Events
+            Events
           </button>
           <button
             onClick={() => setActiveTab('ledgers')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
-              activeTab === 'ledgers' ? 'bg-zinc-800 text-zinc-100' : 'text-zinc-400 hover:text-zinc-200'
+            className={`mc-pixel-font text-[8px] px-2.5 py-1.5 transition-all cursor-pointer ${
+              activeTab === 'ledgers' ? 'bg-[#5c9e31] text-white' : 'text-zinc-400 hover:text-zinc-200'
             }`}
           >
             Ledgers
@@ -109,52 +109,52 @@ export default function LedgerExplorer() {
       </div>
 
       {/* Explorer Content Window */}
-      <div className="p-4 bg-zinc-950/40">
+      <div className="p-4 bg-black/35">
         
         {/* TRANSACTIONS TAB */}
         {activeTab === 'transactions' && (
           <div className="space-y-3" id="explorer-transactions-tab">
             {transactions.length === 0 ? (
-              <div className="text-center py-12 text-zinc-500">
+              <div className="text-center py-12 bg-black border-4 border-black text-zinc-500">
                 <Terminal className="w-8 h-8 mx-auto text-zinc-700 mb-3" />
                 <p className="text-sm font-medium">No transactions on ledger yet</p>
-                <p className="text-xs text-zinc-650 max-w-xs mx-auto mt-1">Cast a vote or register a candidate to trigger a Soroban contract transaction.</p>
+                <p className="text-xs text-zinc-600 max-w-xs mx-auto mt-1">Cast a vote or register a candidate to trigger a Soroban contract transaction.</p>
               </div>
             ) : (
               <div className="overflow-x-auto">
                 <table className="w-full text-left text-xs text-zinc-300">
                   <thead>
-                    <tr className="border-b border-zinc-850 text-zinc-500 uppercase tracking-wider text-[10px] font-semibold">
+                    <tr className="border-b-4 border-black text-[#ffaa00] uppercase tracking-wider mc-pixel-font text-[8px]">
                       <th className="pb-3 pl-2">Hash</th>
                       <th className="pb-3">Source</th>
-                      <th className="pb-3">Invocations / Op</th>
+                      <th className="pb-3">Invocations</th>
                       <th className="pb-3 text-right">Fee (XLM)</th>
                       <th className="pb-3 text-right">Age</th>
                       <th className="pb-3 text-center">Inspect</th>
                     </tr>
                   </thead>
-                  <tbody className="divide-y divide-zinc-900">
+                  <tbody className="divide-y divide-black/45">
                     {transactions.map((tx) => (
-                      <tr key={tx.hash} className="hover:bg-zinc-900/50 group transition-colors">
+                      <tr key={tx.hash} className="hover:bg-[#1a1a1a]/40 group transition-colors">
                         <td className="py-3 pl-2 font-mono text-zinc-400">
-                          <span className="text-indigo-400 font-semibold">{tx.hash.slice(0, 8)}</span>
+                          <span className="text-[#2bf3ff] font-semibold">{tx.hash.slice(0, 8)}</span>
                           {tx.hash.slice(8, 14)}
                         </td>
                         <td className="py-3 font-mono text-zinc-500 text-[11px]">
                           {truncate(tx.source)}
                         </td>
                         <td className="py-3">
-                          <span className={`px-2 py-0.5 rounded text-[10px] font-semibold tracking-wide font-mono ${
-                            tx.operation === 'vote' ? 'bg-indigo-950 border border-indigo-900 text-indigo-400' :
-                            tx.operation === 'register_candidate' ? 'bg-emerald-950 border border-emerald-900/80 text-emerald-400' :
-                            tx.operation === 'friendbot_fund' ? 'bg-amber-950/50 border border-amber-900/50 text-amber-400' :
-                            'bg-zinc-800 text-zinc-300'
+                          <span className={`px-2 py-0.5 rounded text-[8px] mc-pixel-font uppercase border ${
+                            tx.operation === 'vote' ? 'bg-black border-[#2bf3ff] text-[#2bf3ff]' :
+                            tx.operation === 'register_candidate' ? 'bg-black border-[#5c9e31] text-[#8ce25d]' :
+                            tx.operation === 'friendbot_fund' ? 'bg-black border-[#ffaa00] text-[#ffd666]' :
+                            'bg-black border-zinc-700 text-zinc-405'
                           }`}>
                             {tx.operation}
                           </span>
                         </td>
                         <td className="py-3 text-right font-mono text-zinc-400">
-                          {tx.feePaid > 0 ? `${tx.feePaid} XLM` : '0.00 (Friendbot)'}
+                          {tx.feePaid > 0 ? `${tx.feePaid} XLM` : '0.00 (Mock)'}
                         </td>
                         <td className="py-3 text-right font-mono text-zinc-500">
                           {formatTime(tx.timestamp)}
@@ -162,7 +162,7 @@ export default function LedgerExplorer() {
                         <td className="py-3 text-center">
                           <button
                             onClick={() => setSelectedTx(tx)}
-                            className="p-1 px-2.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-[10px] font-semibold text-zinc-300 hover:text-zinc-100 rounded-md transition-all cursor-pointer"
+                            className="mc-gui-btn border-2 py-1 px-2.5 text-[9px] uppercase font-bold"
                           >
                             Inspect
                           </button>
@@ -180,28 +180,28 @@ export default function LedgerExplorer() {
         {activeTab === 'events' && (
           <div className="space-y-3" id="explorer-events-tab">
             {events.length === 0 ? (
-              <div className="text-center py-12 text-zinc-500">
-                <Terminal className="w-8 h-8 mx-auto text-zinc-700 mb-3 animate-pulse" />
+              <div className="text-center py-12 bg-black border-4 border-black text-zinc-500">
+                <Terminal className="w-8 h-8 mx-auto text-zinc-750 mb-3 animate-pulse" />
                 <p className="text-sm font-medium">No smart contract events logged</p>
                 <p className="text-xs text-zinc-600 mt-1">Soroban events appear in real-time when the contract state transitions.</p>
               </div>
             ) : (
               <div className="space-y-2.5">
                 {events.map((evt) => (
-                  <div key={evt.id} className="p-3 bg-zinc-950 border border-zinc-850 rounded-xl flex items-start justify-between gap-4 hover:border-zinc-800 transition-colors">
+                  <div key={evt.id} className="p-3 bg-[#121212] border-2 border-black flex items-start justify-between gap-4 hover:border-zinc-800 transition-colors">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2 flex-wrap">
-                        <span className="text-[10px] font-mono uppercase bg-indigo-950 border border-indigo-900/80 text-indigo-400 px-1.5 py-0.5 rounded font-bold">
+                        <span className="text-[8px] mc-pixel-font uppercase bg-black border border-[#2bf3ff] text-[#2bf3ff] px-1.5 py-0.5 rounded font-bold">
                           {evt.topics[0]}
                         </span>
-                        <span className="text-xs font-mono text-zinc-650">
+                        <span className="text-xs font-mono text-[#aaaaaa]">
                           topics: [{evt.topics.map(t => `"${truncate(t, 4)}"`).join(', ')}]
                         </span>
                       </div>
-                      <p className="text-xs text-zinc-300 font-semibold">{getEventDescription(evt)}</p>
+                      <p className="text-sm text-zinc-300 font-semibold">{getEventDescription(evt)}</p>
                     </div>
                     <span className="text-[10px] text-zinc-500 font-mono flex items-center gap-1 shrink-0 mt-0.5">
-                      <Clock className="w-3 h-3" />
+                      <Clock className="w-3 h-3 text-[#ffaa00]" />
                       {formatTime(evt.timestamp)}
                     </span>
                   </div>
@@ -215,19 +215,19 @@ export default function LedgerExplorer() {
         {activeTab === 'ledgers' && (
           <div className="space-y-2.5 font-mono" id="explorer-ledgers-tab">
             {ledgers.map((ledger) => (
-              <div key={ledger.sequence} className="p-3.5 bg-zinc-950/60 border border-zinc-850 rounded-xl flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs hover:border-zinc-800 transition-colors">
+              <div key={ledger.sequence} className="p-3.5 bg-[#121212] border-2 border-black flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 text-xs hover:border-zinc-800 transition-colors">
                 <div className="flex items-center gap-3">
-                  <div className="p-1.5 bg-zinc-900 text-zinc-400 border border-zinc-800 rounded-lg">
+                  <div className="p-1.5 bg-black text-[#5c9e31] border border-black">
                     <Layers className="w-4 h-4" />
                   </div>
                   <div>
-                    <span className="font-bold text-zinc-200">Ledger #{ledger.sequence}</span>
-                    <p className="text-[10px] text-zinc-500 truncate max-w-[200px] sm:max-w-xs mt-0.5">Hash: {ledger.hash}</p>
+                    <span className="font-bold text-zinc-200">Ledger Block #{ledger.sequence}</span>
+                    <p className="text-[10px] text-zinc-500 truncate max-w-[200px] sm:max-w-xs mt-0.5 font-mono">Hash: {ledger.hash}</p>
                   </div>
                 </div>
-                <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto text-zinc-500 gap-1 border-t sm:border-t-0 border-zinc-900 pt-2 sm:pt-0">
-                  <span className="text-[10px] text-indigo-400 bg-indigo-950/50 border border-indigo-900 px-2 py-0.5 rounded shrink-0">
-                    {ledger.transactionsCount} txs sealed
+                <div className="flex sm:flex-col items-center sm:items-end justify-between w-full sm:w-auto text-zinc-500 gap-1 border-t sm:border-t-0 border-[#1a1a1a] pt-2 sm:pt-0">
+                  <span className="text-[8px] mc-pixel-font text-[#2bf3ff] bg-black border border-[#2bf3ff] px-2 py-0.5 shrink-0 uppercase">
+                    {ledger.transactionsCount} txs Sealed
                   </span>
                   <span className="text-[10px] text-zinc-500 mt-0.5">{new Date(ledger.timestamp).toLocaleTimeString()}</span>
                 </div>
@@ -241,21 +241,21 @@ export default function LedgerExplorer() {
       {/* Transaction Details Modal */}
       {selectedTx && (
         <div className="fixed inset-0 bg-black/90 backdrop-blur-sm flex items-center justify-center p-4 z-50 animate-fade-in" id="tx-details-modal">
-          <div className="bg-zinc-900 border border-zinc-800 rounded-2xl w-full max-w-2xl p-6 relative shadow-2xl animate-scale-up font-mono text-xs">
+          <div className="mc-gui-panel w-full max-w-2xl p-6 relative shadow-2xl animate-scale-up font-mono text-xs text-[#e0e0e0]">
             
             {/* Header */}
-            <div className="flex justify-between items-start border-b border-zinc-800 pb-4 mb-5">
+            <div className="flex justify-between items-start border-b-4 border-black pb-4 mb-5">
               <div>
-                <span className="px-2 py-0.5 bg-emerald-950 border border-emerald-800 text-[10px] text-emerald-400 font-bold rounded uppercase tracking-wider">
+                <span className="mc-pixel-font text-[8px] bg-black border-2 border-[#5c9e31] text-[#8ce25d] px-2 py-0.5 uppercase">
                   Tx Receipt
                 </span>
-                <h3 className="text-base font-bold text-zinc-100 mt-2 truncate max-w-sm sm:max-w-md">
+                <h3 className="mc-title text-[#ffffff] mt-2.5 truncate max-w-sm sm:max-w-md">
                   {selectedTx.hash}
                 </h3>
               </div>
               <button
                 onClick={() => setSelectedTx(null)}
-                className="p-1 bg-zinc-800 hover:bg-zinc-700 text-zinc-400 hover:text-zinc-100 rounded-lg text-sm transition-colors cursor-pointer"
+                className="mc-gui-btn mc-gui-btn-red border-2 px-2.5 py-1 text-xs"
               >
                 ✕
               </button>
@@ -263,32 +263,32 @@ export default function LedgerExplorer() {
 
             {/* Details Grid */}
             <div className="space-y-4 max-h-[400px] overflow-y-auto pr-2">
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-b border-zinc-850 pb-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 border-b-4 border-black pb-4">
                 <div>
-                  <span className="text-zinc-500 block mb-1">Ledger Sequence</span>
+                  <span className="text-zinc-550 block mb-1">Ledger Sequence</span>
                   <span className="text-zinc-200 font-semibold">{selectedTx.ledger}</span>
                 </div>
                 <div>
-                  <span className="text-zinc-500 block mb-1">Sealed Timestamp</span>
+                  <span className="text-zinc-550 block mb-1">Sealed Timestamp</span>
                   <span className="text-zinc-200">{new Date(selectedTx.timestamp).toLocaleString()}</span>
                 </div>
                 <div>
-                  <span className="text-zinc-500 block mb-1">Status</span>
-                  <span className="px-2 py-0.5 bg-emerald-950 text-emerald-400 border border-emerald-900/80 rounded font-bold text-[10px] uppercase">
+                  <span className="text-zinc-550 block mb-1">Status</span>
+                  <span className="text-[8px] mc-pixel-font bg-black border border-[#5c9e31] text-[#8ce25d] px-1.5 py-0.5 uppercase">
                     {selectedTx.status}
                   </span>
                 </div>
                 <div>
-                  <span className="text-zinc-500 block mb-1">Gas / Soroban CPU Fee</span>
+                  <span className="text-zinc-550 block mb-1">Gas / Soroban CPU Fee</span>
                   <span className="text-zinc-200">{selectedTx.feePaid > 0 ? `${selectedTx.feePaid} XLM` : '0.00 XLM'}</span>
                 </div>
               </div>
 
               {/* Soroban VM Details */}
-              <div className="p-3.5 bg-zinc-950 border border-zinc-850 rounded-xl space-y-2">
-                <h4 className="text-[11px] font-bold text-zinc-400 uppercase tracking-wider mb-2 flex items-center gap-1.5">
-                  <Terminal className="w-4 h-4 text-indigo-400" />
-                  Soroban Execution Footprint
+              <div className="p-3.5 bg-black border-4 border-black space-y-2">
+                <h4 className="text-[9px] mc-pixel-font text-[#ffaa00] uppercase tracking-wider mb-2 flex items-center gap-1.5">
+                  <Terminal className="w-4 h-4 text-[#ffaa00]" />
+                  Soroban VM Resource Cost
                 </h4>
                 <div className="grid grid-cols-2 gap-3 text-[11px]">
                   <div>
@@ -296,7 +296,7 @@ export default function LedgerExplorer() {
                     <span className="text-zinc-300 font-semibold font-mono">{(selectedTx.cpuInstructions).toLocaleString()}</span>
                   </div>
                   <div>
-                    <span className="text-zinc-500 block">RAM Allocations</span>
+                    <span className="text-zinc-550 block">RAM Allocations</span>
                     <span className="text-zinc-300 font-semibold font-mono">{(selectedTx.ramBytes).toLocaleString()} bytes</span>
                   </div>
                 </div>
@@ -305,12 +305,12 @@ export default function LedgerExplorer() {
               {/* Invocation Parameters */}
               <div className="space-y-1">
                 <span className="text-zinc-500 block">Function Invoked</span>
-                <span className="font-semibold text-indigo-400">{selectedTx.operation}()</span>
+                <span className="font-semibold text-[#2bf3ff]">{selectedTx.operation}()</span>
               </div>
 
               <div className="space-y-1">
-                <span className="text-zinc-500 block">Arguments (Map Keys)</span>
-                <pre className="p-3 bg-zinc-950 border border-zinc-850 rounded-xl overflow-x-auto text-zinc-300 text-[11px]">
+                <span className="text-zinc-505 block">Arguments (Map Keys)</span>
+                <pre className="p-3 bg-black border-4 border-black overflow-x-auto text-zinc-300 text-[11px]">
                   {JSON.stringify(selectedTx.parameters, null, 2)}
                 </pre>
               </div>
@@ -318,15 +318,15 @@ export default function LedgerExplorer() {
               {/* Emitted Events */}
               {selectedTx.events.length > 0 && (
                 <div className="space-y-2">
-                  <span className="text-zinc-500 block">Emitted Soroban Events ({selectedTx.events.length})</span>
+                  <span className="text-zinc-505 block">Emitted Soroban Events ({selectedTx.events.length})</span>
                   {selectedTx.events.map((evt, idx) => (
-                    <div key={idx} className="p-3 bg-zinc-950 border border-zinc-850 rounded-xl text-[11px] space-y-1.5">
+                    <div key={idx} className="p-3 bg-black border-4 border-black text-[11px] space-y-1.5">
                       <div className="flex justify-between items-center text-[10px]">
-                        <span className="text-indigo-400 font-bold uppercase">Topic: {evt.topics[0]}</span>
-                        <span className="text-zinc-500">Contract Event #{idx + 1}</span>
+                        <span className="text-[#2bf3ff] font-bold uppercase">Topic: {evt.topics[0]}</span>
+                        <span className="text-zinc-555">Contract Event #{idx + 1}</span>
                       </div>
-                      <p className="text-zinc-300 font-bold">{getEventDescription(evt)}</p>
-                      <pre className="text-[10px] text-zinc-500 pt-1 border-t border-zinc-900 mt-1">
+                      <p className="text-[#8ce25d] font-bold">{getEventDescription(evt)}</p>
+                      <pre className="text-[10px] text-zinc-500 pt-1 border-t border-[#1a1a1a] mt-1">
                         Topics: {JSON.stringify(evt.topics)}
                         {"\n"}Data payload: {evt.data}
                       </pre>
@@ -337,19 +337,19 @@ export default function LedgerExplorer() {
             </div>
 
             {/* Footer */}
-            <div className="mt-6 pt-4 border-t border-zinc-850 flex justify-between items-center">
+            <div className="mt-6 pt-4 border-t-4 border-black flex justify-between items-center">
               <a
                 href={`https://stellar.expert/explorer/testnet/tx/${selectedTx.hash}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-xs text-indigo-400 hover:text-indigo-300 font-bold flex items-center gap-1 transition-colors"
+                className="text-xs text-[#2bf3ff] hover:text-[#ffd666] font-bold flex items-center gap-1 transition-colors"
               >
                 View on StellarExpert Mock
                 <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
               <button
                 onClick={() => setSelectedTx(null)}
-                className="px-4 py-2 bg-zinc-800 hover:bg-zinc-700 text-zinc-100 rounded-lg text-xs font-semibold cursor-pointer transition-colors"
+                className="mc-gui-btn border-2 px-3 py-1.5 text-xs font-semibold cursor-pointer"
               >
                 Close Receipt
               </button>

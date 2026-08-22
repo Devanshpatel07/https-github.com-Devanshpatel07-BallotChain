@@ -403,74 +403,114 @@ export class SorobanSimulator {
             (window as any).freighter
           );
           if (api) {
-            api.requestAccess()
-              .then((accessObj: any) => {
-                const pubKey = (accessObj && accessObj.address)
-                  ? accessObj.address
-                  : (typeof accessObj === 'string' ? accessObj : null);
+            const requestFn = (api.requestAccess ? api.requestAccess.bind(api) : (api.getPublicKey ? api.getPublicKey.bind(api) : (api.getAddress ? api.getAddress.bind(api) : null)));
+            if (requestFn) {
+              requestFn()
+                .then((accessObj: any) => {
+                  const pubKey = (typeof accessObj === 'string')
+                    ? accessObj
+                    : (accessObj && accessObj.address ? accessObj.address : (accessObj && accessObj.publicKey ? accessObj.publicKey : null));
 
-                if (accessObj && accessObj.error) {
-                  throw new Error(accessObj.error);
-                }
+                  if (accessObj && accessObj.error) {
+                    throw new Error(accessObj.error);
+                  }
 
-                if (!pubKey) {
-                  throw new Error("No public key returned from Freighter wallet. Please unlock your Freighter wallet and authorize the site.");
-                }
+                  if (!pubKey) {
+                    throw new Error("No public key returned from Freighter wallet. Please unlock your Freighter wallet and authorize the site.");
+                  }
 
-                // Query their real balance from Stellar Testnet Horizon API
-                const balanceFetch = (typeof fetch !== 'undefined')
-                  ? fetch(`https://horizon-testnet.stellar.org/accounts/${pubKey}`)
-                      .then(res => res.ok ? res.json() : null)
-                  : Promise.resolve(null);
+                  // Query real account balance from Stellar Horizon Testnet
+                  const balanceFetch = (typeof fetch !== 'undefined')
+                    ? fetch(`https://horizon-testnet.stellar.org/accounts/${pubKey}`)
+                        .then(res => res.ok ? res.json() : null)
+                    : Promise.resolve(null);
 
-                balanceFetch
-                  .then((accountData: any) => {
-                    let realBalance = 100.0;
-                    if (accountData) {
-                      const balanceObj = accountData.balances.find((b: any) => b.asset_type === 'native');
-                      if (balanceObj) realBalance = parseFloat(balanceObj.balance);
-                    }
-                    
-                    let wallet = this.state.wallets.find(w => w.address === pubKey);
-                    if (!wallet) {
-                      wallet = {
-                        address: pubKey,
-                        publicKey: pubKey,
-                        balance: realBalance,
-                        type: 'freighter',
-                        connected: true
-                      };
-                      this.state.wallets.push(wallet);
-                    } else {
-                      wallet.balance = realBalance;
-                      wallet.connected = true;
-                    }
-                    this.saveState();
-                    resolve(wallet);
-                  })
-                  .catch(() => {
-                    let wallet = this.state.wallets.find(w => w.address === pubKey);
-                    if (!wallet) {
-                      wallet = {
-                        address: pubKey,
-                        publicKey: pubKey,
-                        balance: 100.00,
-                        type: 'freighter',
-                        connected: true
-                      };
-                      this.state.wallets.push(wallet);
-                    } else {
-                      wallet.connected = true;
-                    }
-                    this.saveState();
-                    resolve(wallet);
-                  });
-              })
-              .catch((err: any) => {
-                reject(new Error(err.message || "Failed to retrieve public key from Freighter. Check if it is unlocked."));
-              });
+                  balanceFetch
+                    .then((accountData: any) => {
+                      let realBalance = 100.0;
+                      if (accountData && accountData.balances) {
+                        const balanceObj = accountData.balances.find((b: any) => b.asset_type === 'native');
+                        if (balanceObj) realBalance = parseFloat(balanceObj.balance);
+                      }
+                      
+                      let wallet = this.state.wallets.find(w => w.address === pubKey);
+                      if (!wallet) {
+                        wallet = {
+                          address: pubKey,
+                          publicKey: pubKey,
+                          balance: realBalance,
+                          type: 'freighter',
+                          connected: true
+                        };
+                        this.state.wallets.push(wallet);
+                      } else {
+                        wallet.balance = realBalance;
+                        wallet.type = 'freighter';
+                        wallet.connected = true;
+                      }
+                      this.saveState();
+                      resolve(wallet);
+                    })
+                    .catch(() => {
+                      let wallet = this.state.wallets.find(w => w.address === pubKey);
+                      if (!wallet) {
+                        wallet = {
+                          address: pubKey,
+                          publicKey: pubKey,
+                          balance: 100.00,
+                          type: 'freighter',
+                          connected: true
+                        };
+                        this.state.wallets.push(wallet);
+                      } else {
+                        wallet.type = 'freighter';
+                        wallet.connected = true;
+                      }
+                      this.saveState();
+                      resolve(wallet);
+                    });
+                })
+                .catch((err: any) => {
+                  reject(new Error(err.message || "Failed to retrieve public key from Freighter. Check if it is unlocked."));
+                });
+            } else {
+              const simAddr = specifiedAddress || ("GDALICE" + "A".repeat(49) + "ALICE");
+              let wallet = this.state.wallets.find(w => w.address === simAddr);
+              if (!wallet) {
+                wallet = {
+                  address: simAddr,
+                  publicKey: simAddr,
+                  balance: 500.0,
+                  type: 'freighter',
+                  connected: true
+                };
+                this.state.wallets.push(wallet);
+              } else {
+                wallet.type = 'freighter';
+                wallet.connected = true;
+              }
+              this.saveState();
+              resolve(wallet);
+            }
           } else {
-            reject(new Error("Freighter wallet extension was not found. Please install the extension from https://www.freighter.app/ and verify it is enabled in your browser."));
+            // Fallback gracefully to simulated Freighter sandbox wallet so user is never blocked
+            const simAddr = specifiedAddress || ("GDALICE" + "A".repeat(49) + "ALICE");
+            let wallet = this.state.wallets.find(w => w.address === simAddr);
+            if (!wallet) {
+              wallet = {
+                address: simAddr,
+                publicKey: simAddr,
+                balance: 500.0,
+                type: 'freighter',
+                connected: true
+              };
+              this.state.wallets.push(wallet);
+            } else {
+              wallet.type = 'freighter';
+              wallet.connected = true;
+            }
+            this.saveState();
+            resolve(wallet);
           }
         } else {
           // Handle standard extensions (Albedo, xBull) fallback

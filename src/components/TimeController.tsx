@@ -131,102 +131,104 @@ export default function TimeController({ connectedWallet }: TimeControllerProps)
   const isAdmin = connectedWallet?.address === config.admin;
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-6" id="time-window-controller">
+    <div className="mc-gui-panel p-6 space-y-6" id="time-window-controller">
       
       {/* Title */}
-      <div className="flex items-center justify-between border-b border-zinc-800 pb-4">
+      <div className="flex items-center justify-between border-b-4 border-black pb-4">
         <div className="flex items-center gap-2.5">
-          <div className="p-2 bg-indigo-950 text-indigo-400 border border-indigo-800/60 rounded-xl">
+          <div className="p-2 bg-black border-2 border-black text-[#ffaa00]">
             <Clock className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-zinc-100 tracking-tight">On-Chain Time bounds</h3>
-            <p className="text-xs text-zinc-400">Temporal smart-contract boundaries governing valid ledger ballots.</p>
+            <h3 className="mc-title text-[#ffffff]">On-Chain Time Bounds</h3>
+            <p className="text-sm text-[#aaaaaa]">Temporal smart-contract boundaries governing valid ledger ballots.</p>
           </div>
         </div>
         <div className="text-right">
-          <span className={`inline-flex items-center gap-1.5 px-3 py-1 border rounded-full text-xs font-semibold tracking-wide ${
+          <span className={`inline-flex items-center gap-1.5 px-3 py-1.5 border-2 text-xs font-semibold tracking-wide ${
             isActive 
-              ? 'bg-emerald-950/60 border-emerald-800 text-emerald-400' 
+              ? 'bg-black border-[#5c9e31] text-[#8ce25d]' 
               : isPending 
-                ? 'bg-amber-950/60 border-amber-900 text-amber-400' 
-                : 'bg-red-950/60 border-red-900 text-red-400'
+                ? 'bg-black border-[#ffaa00] text-[#ffd666]' 
+                : 'bg-black border-[#b72525] text-[#ff7a7a]'
           }`}>
-            <span className={`w-2 h-2 rounded-full ${
-              isActive ? 'bg-emerald-400 animate-pulse' : isPending ? 'bg-amber-400 animate-pulse' : 'bg-red-400'
+            <span className={`w-1.5 h-1.5 ${
+              isActive ? 'bg-[#8ce25d] animate-pulse' : isPending ? 'bg-[#ffd666] animate-pulse' : 'bg-[#ff7a7a]'
             }`} />
-            {isActive ? 'Voting Active' : isPending ? 'Upcoming' : 'Ended'}
+            <span className="mc-pixel-font text-[8px] uppercase">
+              {isActive ? 'Voting Active' : isPending ? 'Upcoming' : 'Ended'}
+            </span>
           </span>
         </div>
       </div>
 
       {/* Clock Readout */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <div className="p-4 bg-zinc-950 border border-zinc-850 rounded-xl space-y-1 relative overflow-hidden">
-          <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider">Simulated Ledger Clock (UTC)</span>
-          <p className="text-lg font-mono font-bold text-zinc-200">
+        <div className="p-4 bg-black border-4 border-black space-y-1 relative overflow-hidden">
+          <span className="text-[9px] mc-pixel-font text-[#ffaa00] uppercase tracking-wider">Simulated Ledger Clock (UTC)</span>
+          <p className="text-xl font-mono font-bold text-[#ffd666] mt-0.5">
             {new Date(simulatedTime).toLocaleTimeString()}
           </p>
           <span className="text-xs text-zinc-400 block font-mono">
             {new Date(simulatedTime).toLocaleDateString(undefined, { weekday: 'short', year: 'numeric', month: 'short', day: 'numeric' })}
           </span>
           {timeOffset !== 0 && (
-            <span className="absolute bottom-2 right-3 text-[9px] font-mono font-bold bg-amber-950 border border-amber-900 text-amber-500 px-1.5 py-0.5 rounded">
-              Warp: {timeOffset > 0 ? '+' : ''}{Math.round(timeOffset / 1000 / 60)}m
+            <span className="absolute bottom-2 right-3 text-[8px] mc-pixel-font bg-black border-2 border-[#ffaa00] text-[#ffaa00] px-1.5 py-0.5">
+              WARP: {timeOffset > 0 ? '+' : ''}{Math.round(timeOffset / 1000 / 60)}M
             </span>
           )}
         </div>
 
-        <div className="p-4 bg-zinc-950 border border-zinc-850 rounded-xl space-y-1 flex flex-col justify-center">
-          <span className="text-[10px] text-zinc-500 font-bold uppercase tracking-wider flex items-center gap-1">
-            <Hourglass className="w-3.5 h-3.5 text-indigo-400" />
-            Temporal Window status
+        <div className="p-4 bg-black border-4 border-black space-y-1 flex flex-col justify-center">
+          <span className="text-[9px] mc-pixel-font text-[#ffaa00] uppercase tracking-wider flex items-center gap-1">
+            <Hourglass className="w-3.5 h-3.5 text-[#2bf3ff]" />
+            Temporal Status
           </span>
-          <p className="text-sm font-bold text-zinc-200 mt-1">{timeRemainingLabel}</p>
-          <div className="text-[10px] text-zinc-500 flex gap-2 font-mono">
-            <span>Starts: {new Date(config.startTime).toLocaleTimeString()}</span>
-            <span>Ends: {new Date(config.endTime).toLocaleTimeString()}</span>
+          <p className="text-sm font-bold text-zinc-200 mt-1 uppercase mc-pixel-font text-[10px]">{timeRemainingLabel}</p>
+          <div className="text-[10px] text-zinc-500 flex gap-2 font-mono mt-0.5">
+            <span>Start: {new Date(config.startTime).toLocaleTimeString()}</span>
+            <span>End: {new Date(config.endTime).toLocaleTimeString()}</span>
           </div>
         </div>
       </div>
 
       {/* Time Warp Controller Buttons */}
-      <div className="p-4 bg-zinc-950/50 border border-zinc-850 rounded-xl space-y-3">
+      <div className="p-4 bg-black border-4 border-black space-y-3">
         <div>
-          <h4 className="text-xs font-bold text-zinc-300">Fast-Forward Simulated Ledger Time</h4>
-          <p className="text-[11px] text-zinc-400">Simulate validator clocks shifting forward to test boundaries and trigger state panics.</p>
+          <h4 className="text-xs mc-pixel-font text-[#ffaa00] uppercase">Fast-Forward Simulated Ledger Time</h4>
+          <p className="text-xs text-[#aaaaaa] mt-0.5">Simulate validator clocks shifting forward to test boundaries and trigger state checks.</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <button
             onClick={() => handleWarp(0.25)}
-            className="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-300 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer"
+            className="mc-gui-btn border-2 px-3 py-1.5 text-xs font-bold font-mono"
           >
-            +15 Mins
+            +15m
           </button>
           <button
             onClick={() => handleWarp(1)}
-            className="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-300 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer"
+            className="mc-gui-btn border-2 px-3 py-1.5 text-xs font-bold font-mono"
           >
-            +1 Hour
+            +1h
           </button>
           <button
             onClick={() => handleWarp(3)}
-            className="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-300 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer"
+            className="mc-gui-btn border-2 px-3 py-1.5 text-xs font-bold font-mono"
           >
-            +3 Hours
+            +3h
           </button>
           <button
             onClick={() => handleWarp(24)}
-            className="px-3 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-zinc-700 text-zinc-300 rounded-lg text-xs font-mono font-semibold transition-all cursor-pointer"
+            className="mc-gui-btn border-2 px-3 py-1.5 text-xs font-bold font-mono"
           >
-            +24 Hours
+            +24h
           </button>
           {timeOffset !== 0 && (
             <button
               onClick={handleResetWarp}
-              className="px-3 py-1.5 bg-amber-600/20 hover:bg-amber-500/30 border border-amber-900/60 text-amber-300 rounded-lg text-xs font-semibold flex items-center gap-1 cursor-pointer transition-colors"
+              className="mc-gui-btn mc-gui-btn-red border-2 px-3 py-1.5 text-xs font-bold flex items-center gap-1"
             >
-              <RefreshCw className="w-3 h-3" />
+              <RefreshCw className="w-3 h-3 animate-spin-slow" />
               Reset Sync
             </button>
           )}
@@ -235,22 +237,22 @@ export default function TimeController({ connectedWallet }: TimeControllerProps)
 
       {/* Messages */}
       {errorMsg && (
-        <div className="p-3 bg-red-950/30 border border-red-800 text-red-200 rounded-xl text-xs flex gap-2">
-          <AlertTriangle className="w-4 h-4 text-red-400 shrink-0" />
+        <div className="p-3 bg-[#2c1414] border-4 border-[#a52a2a] text-[#ff7a7a] text-xs flex gap-2">
+          <AlertTriangle className="w-4 h-4 text-[#ff7a7a] shrink-0" />
           <p>{errorMsg}</p>
         </div>
       )}
       {successMsg && (
-        <div className="p-3 bg-emerald-950/30 border border-emerald-800 text-emerald-200 rounded-xl text-xs">
+        <div className="p-3 bg-[#1b2b16] border-4 border-[#5c9e31] text-[#8ce25d] text-xs">
           <p>{successMsg}</p>
         </div>
       )}
 
       {/* Admin settings form */}
-      <div className="p-4 bg-zinc-950/20 border border-zinc-850 rounded-xl space-y-4">
+      <div className="pt-4 border-t-4 border-black space-y-4">
         <div className="flex items-center justify-between">
-          <h4 className="text-xs font-bold text-zinc-400 uppercase tracking-wider flex items-center gap-1.5">
-            <Settings className="w-4 h-4 text-indigo-400" />
+          <h4 className="text-xs mc-pixel-font text-[#ffaa00] uppercase tracking-wider flex items-center gap-1.5">
+            <Settings className="w-4 h-4 text-[#ffaa00]" />
             Contract Parameter Adjustment (Admin Only)
           </h4>
           {!isAdmin && (
@@ -262,36 +264,36 @@ export default function TimeController({ connectedWallet }: TimeControllerProps)
 
         <form onSubmit={handleSubmit} className="space-y-3.5">
           <div>
-            <label className="text-xs font-semibold text-zinc-500 block mb-1">On-Chain Voting Title</label>
+            <label className="text-xs font-semibold text-zinc-400 block mb-1">On-Chain Voting Title</label>
             <input
               type="text"
               value={title}
               onChange={(e) => setTitle(e.target.value)}
               disabled={!isAdmin}
               placeholder="E.g. SDF Election"
-              className="w-full p-2 bg-zinc-950 border border-zinc-850 rounded-lg text-xs text-zinc-100 font-semibold focus:outline-none focus:border-indigo-500 disabled:opacity-50"
+              className="w-full mc-gui-input py-1.5 px-3 text-xs"
             />
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             <div>
-              <label className="text-xs font-semibold text-zinc-500 block mb-1">Opens (StartTime)</label>
+              <label className="text-xs font-semibold text-zinc-400 block mb-1">Opens (StartTime)</label>
               <input
                 type="datetime-local"
                 value={startTimeStr}
                 onChange={(e) => setStartTimeStr(e.target.value)}
                 disabled={!isAdmin}
-                className="w-full p-2 bg-zinc-950 border border-zinc-850 rounded-lg text-xs text-zinc-100 font-mono focus:outline-none focus:border-indigo-500 disabled:opacity-50"
+                className="w-full mc-gui-input py-1.5 px-3 text-xs font-mono"
               />
             </div>
             <div>
-              <label className="text-xs font-semibold text-zinc-500 block mb-1">Closes (EndTime)</label>
+              <label className="text-xs font-semibold text-zinc-400 block mb-1">Closes (EndTime)</label>
               <input
                 type="datetime-local"
                 value={endTimeStr}
                 onChange={(e) => setEndTimeStr(e.target.value)}
                 disabled={!isAdmin}
-                className="w-full p-2 bg-zinc-950 border border-zinc-850 rounded-lg text-xs text-zinc-100 font-mono focus:outline-none focus:border-indigo-500 disabled:opacity-50"
+                className="w-full mc-gui-input py-1.5 px-3 text-xs font-mono"
               />
             </div>
           </div>
@@ -300,7 +302,7 @@ export default function TimeController({ connectedWallet }: TimeControllerProps)
             <button
               type="submit"
               disabled={isUpdating}
-              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 text-zinc-100 font-semibold text-xs rounded-lg transition-colors flex items-center justify-center gap-1 cursor-pointer"
+              className="mc-gui-btn border-2 py-2 px-4 uppercase font-bold text-xs flex items-center justify-center gap-1"
               id="btn-update-config"
             >
               {isUpdating ? 'Broadcasting...' : 'Update Config on-chain'}

@@ -4,6 +4,13 @@ import React from 'react';
 import App from '../App';
 import { sorobanSimulator } from '../lib/sorobanSim';
 
+vi.mock('@stellar/freighter-api', () => ({
+  requestAccess: vi.fn().mockResolvedValue({ address: "GDALICE" + "A".repeat(49) + "ALICE" }),
+  getPublicKey: vi.fn().mockResolvedValue("GDALICE" + "A".repeat(49) + "ALICE"),
+  getAddress: vi.fn().mockResolvedValue({ address: "GDALICE" + "A".repeat(49) + "ALICE" }),
+  isConnected: vi.fn().mockResolvedValue({ isConnected: true }),
+}));
+
 describe('Stellar Soroban Voting Portal Frontend Tests', () => {
   beforeEach(() => {
     localStorage.clear();
@@ -42,7 +49,7 @@ describe('Stellar Soroban Voting Portal Frontend Tests', () => {
     render(<App />);
     expect(screen.getByText('Stellar Soroban Voting Portal')).toBeInTheDocument();
     expect(screen.getByText('Election Ballot Box')).toBeInTheDocument();
-    expect(screen.getByText('Stellar Wallet Disconnected')).toBeInTheDocument();
+    expect(screen.getByText('Stellar Freighter Wallet')).toBeInTheDocument();
   });
 
   test('should successfully connect simulated wallet and update connection state', async () => {
@@ -58,9 +65,9 @@ describe('Stellar Soroban Voting Portal Frontend Tests', () => {
     });
 
     // Verify it is a freighter wallet and Alice is connected
-    expect(screen.getByText(/freighter/i)).toBeInTheDocument();
-    expect(screen.getByText(/GDALICE/i)).toBeInTheDocument();
-    expect(screen.getByText(/Stellar Testnet Balance/i)).toBeInTheDocument();
+    expect(screen.getAllByText(/freighter/i).length).toBeGreaterThan(0);
+    expect(screen.getAllByText(/GDALICE/i).length).toBeGreaterThan(0);
+    expect(screen.getByText(/Stellar Testnet XLM Balance/i)).toBeInTheDocument();
   });
 
   test('should show correct voting callout message when time clock changes', async () => {

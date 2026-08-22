@@ -92,66 +92,65 @@ export default function DevOpsPanel() {
 
       setOracleLog(prev => [actions[0], ...prev].slice(0, 10));
     };
-
     const unsubscribe = sorobanSimulator.subscribe(handleEvent);
     return () => unsubscribe();
   }, []);
 
   return (
-    <div className="bg-zinc-900 border border-zinc-800 rounded-2xl overflow-hidden" id="devops-engineering-panel">
+    <div className="mc-gui-panel overflow-hidden" id="devops-engineering-panel">
       {/* Header */}
-      <div className="p-6 bg-zinc-950 border-b border-zinc-850 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="p-6 bg-[#252525] border-b-4 border-black flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="flex items-center gap-3">
-          <div className="p-2 bg-indigo-950 text-indigo-400 border border-indigo-800/60 rounded-xl">
+          <div className="p-2 bg-black border-2 border-black text-[#ffaa00]">
             <ShieldCheck className="w-5 h-5" />
           </div>
           <div>
-            <h3 className="text-lg font-bold text-zinc-100 flex items-center gap-1.5">
-              Smart DevOps & Test Console
+            <h3 className="mc-title text-[#ffffff] flex items-center gap-1.5">
+              DevOps & Test Console
             </h3>
-            <p className="text-xs text-zinc-400">Execute on-chain mock contract tests, verify deployment pipelines, and inspect cross-contract calls.</p>
+            <p className="text-sm text-[#aaaaaa]">Execute on-chain mock contract tests, verify deployment pipelines, and inspect cross-contract calls.</p>
           </div>
         </div>
 
         {/* Tab Controls */}
-        <div className="flex flex-wrap gap-1 bg-zinc-900 border border-zinc-800 p-1 rounded-lg self-start sm:self-auto">
+        <div className="flex flex-wrap gap-1 bg-black border-2 border-black p-1 self-start sm:self-auto">
           <button
             onClick={() => setActiveTab('tests')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
-              activeTab === 'tests' ? 'bg-zinc-800 text-zinc-100' : 'text-zinc-400 hover:text-zinc-200'
+            className={`mc-pixel-font text-[8px] px-2.5 py-1.5 transition-all cursor-pointer ${
+              activeTab === 'tests' ? 'bg-[#5c9e31] text-white' : 'text-zinc-400 hover:text-zinc-200'
             }`}
           >
             Unit Tests
           </button>
           <button
             onClick={() => setActiveTab('pipeline')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
-              activeTab === 'pipeline' ? 'bg-zinc-800 text-zinc-100' : 'text-zinc-400 hover:text-zinc-200'
+            className={`mc-pixel-font text-[8px] px-2.5 py-1.5 transition-all cursor-pointer ${
+              activeTab === 'pipeline' ? 'bg-[#5c9e31] text-white' : 'text-zinc-400 hover:text-zinc-200'
             }`}
           >
             CI/CD Pipeline
           </button>
           <button
             onClick={() => setActiveTab('inter_contract')}
-            className={`px-3 py-1.5 text-xs font-semibold rounded-md transition-colors cursor-pointer ${
-              activeTab === 'inter_contract' ? 'bg-zinc-800 text-zinc-100' : 'text-zinc-400 hover:text-zinc-200'
+            className={`mc-pixel-font text-[8px] px-2.5 py-1.5 transition-all cursor-pointer ${
+              activeTab === 'inter_contract' ? 'bg-[#5c9e31] text-white' : 'text-zinc-400 hover:text-zinc-200'
             }`}
           >
-            Inter-Contract Log
+            Inter-Contract
           </button>
         </div>
       </div>
 
       {/* Content Viewport */}
-      <div className="p-5 bg-zinc-950/40">
+      <div className="p-5 bg-black/30">
         
         {/* UNIT TESTS VIEW */}
         {activeTab === 'tests' && (
           <div className="space-y-4" id="devops-tests-content">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-zinc-950 p-4 border border-zinc-850 rounded-xl">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-black border-4 border-black p-4">
               <div>
-                <h4 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
-                  <Cpu className="w-4 h-4 text-indigo-400" />
+                <h4 className="mc-title text-[#ffffff] flex items-center gap-2">
+                  <Cpu className="w-4 h-4 text-[#5c9e31]" />
                   Soroban Rust Unit Tests
                 </h4>
                 <p className="text-xs text-zinc-400 mt-0.5">Tests storage permanence rules, initialization blocks, and protection against double-ballots.</p>
@@ -159,31 +158,31 @@ export default function DevOpsPanel() {
               <button
                 onClick={runTests}
                 disabled={testState === 'running'}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-zinc-100 text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer self-start sm:self-auto"
+                className="mc-gui-btn uppercase border-2 shadow-none font-bold py-2.5 px-4"
               >
                 {testState === 'running' ? (
                   <>
-                    <RotateCw className="w-3.5 h-3.5 animate-spin" />
-                    Testing Cargo Target...
+                    <RotateCw className="w-3.5 h-3.5 mr-1 animate-spin" />
+                    Testing Cargo...
                   </>
                 ) : (
                   <>
-                    <Play className="w-3.5 h-3.5 fill-zinc-100" />
-                    Run Smart Tests
+                    <Play className="w-3.5 h-3.5 mr-1 fill-[#e0e0e0]" />
+                    Run Tests
                   </>
                 )}
               </button>
             </div>
 
             {/* Terminal output */}
-            <div className="p-4 bg-black border border-zinc-850 rounded-xl font-mono text-xs text-zinc-300 min-h-[180px] max-h-[220px] overflow-y-auto space-y-1 select-text">
+            <div className="p-4 bg-black border-4 border-[#222] font-mono text-xs text-zinc-300 min-h-[180px] max-h-[220px] overflow-y-auto space-y-1 select-text">
               {testLogs.length === 0 && (
-                <p className="text-zinc-500 italic">Click "Run Smart Tests" to trigger cargo-test suite simulation and inspect passing assertions.</p>
+                <p className="text-zinc-500 italic">Click "Run Tests" to trigger cargo-test suite simulation and inspect passing assertions.</p>
               )}
               {testLogs.map((log, index) => {
                 const isPass = log.includes('OK') || log.includes('ok') || log.includes('passed');
                 return (
-                  <p key={index} className={isPass ? 'text-emerald-400' : log.includes('Run') ? 'text-indigo-400' : 'text-zinc-300'}>
+                  <p key={index} className={isPass ? 'text-[#8ce25d]' : log.includes('Run') ? 'text-[#2bf3ff]' : 'text-zinc-300'}>
                     {log}
                   </p>
                 );
@@ -195,42 +194,42 @@ export default function DevOpsPanel() {
         {/* CI/CD PIPELINE VIEW */}
         {activeTab === 'pipeline' && (
           <div className="space-y-4" id="devops-pipeline-content">
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-zinc-950 p-4 border border-zinc-850 rounded-xl">
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 bg-black border-4 border-black p-4">
               <div>
-                <h4 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
-                  <GitBranch className="w-4 h-4 text-indigo-400" />
+                <h4 className="mc-title text-[#ffffff] flex items-center gap-2">
+                  <GitBranch className="w-4 h-4 text-[#5c9e31]" />
                   GitHub Actions CD Workflow
                 </h4>
-                <p className="text-xs text-zinc-400 mt-0.5">Orchestrates automated smart contract compilation, WASM optimizations, tests, and web app deployments.</p>
+                <p className="text-xs text-zinc-400 mt-0.5 font-sans">Orchestrates automated smart contract compilation, WASM optimizations, tests, and web app deployments.</p>
               </div>
               <button
                 onClick={runPipeline}
                 disabled={pipelineState === 'running'}
-                className="px-4 py-2 bg-indigo-600 hover:bg-indigo-500 disabled:opacity-50 text-zinc-100 text-xs font-bold rounded-lg transition-colors flex items-center justify-center gap-2 cursor-pointer self-start sm:self-auto"
+                className="mc-gui-btn uppercase border-2 shadow-none font-bold py-2.5 px-4"
               >
                 {pipelineState === 'running' ? (
                   <>
-                    <RotateCw className="w-3.5 h-3.5 animate-spin" />
-                    Deploying Stack...
+                    <RotateCw className="w-3.5 h-3.5 mr-1 animate-spin" />
+                    Deploying...
                   </>
                 ) : (
                   <>
-                    <Play className="w-3.5 h-3.5 fill-zinc-100" />
-                    Trigger Deploy Action
+                    <Play className="w-3.5 h-3.5 mr-1 fill-[#e0e0e0]" />
+                    Trigger CD
                   </>
                 )}
               </button>
             </div>
 
             {/* Pipeline logs console */}
-            <div className="p-4 bg-black border border-zinc-850 rounded-xl font-mono text-xs text-zinc-300 min-h-[180px] max-h-[220px] overflow-y-auto space-y-1.5 select-text">
+            <div className="p-4 bg-black border-4 border-[#222] font-mono text-xs text-zinc-300 min-h-[180px] max-h-[220px] overflow-y-auto space-y-1.5 select-text">
               {pipelineLogs.length === 0 && (
-                <p className="text-zinc-500 italic">No runs executed yet. Launch the deployment pipeline process to build the optimized Rust contract and serve the next build.</p>
+                <p className="text-zinc-500 italic">No runs executed yet. Launch the deployment pipeline process to build the optimized Rust contract.</p>
               )}
               {pipelineLogs.map((log, index) => {
                 const isCheck = log.includes('Success') || log.includes('Successfully') || log.includes('PASSED') || log.includes('Complete');
                 return (
-                  <p key={index} className={isCheck ? 'text-emerald-400 font-bold' : log.startsWith('🔔') ? 'text-indigo-400' : 'text-zinc-300'}>
+                  <p key={index} className={isCheck ? 'text-[#8ce25d] font-bold' : log.startsWith('🔔') ? 'text-[#ffaa00]' : 'text-zinc-300'}>
                     {log}
                   </p>
                 );
@@ -242,34 +241,34 @@ export default function DevOpsPanel() {
         {/* INTER-CONTRACT COMMUNICATION VIEW */}
         {activeTab === 'inter_contract' && (
           <div className="space-y-4" id="devops-inter-contract-content">
-            <div className="p-4 bg-zinc-950 border border-zinc-850 rounded-xl space-y-2">
-              <h4 className="text-sm font-bold text-zinc-200 flex items-center gap-2">
-                <Link2 className="w-4 h-4 text-indigo-400" />
-                Inter-Contract Calling & Security Check
+            <div className="p-4 bg-black border-4 border-black space-y-2">
+              <h4 className="mc-title text-[#ffffff] flex items-center gap-2">
+                <Link2 className="w-4 h-4 text-[#2bf3ff]" />
+                Inter-Contract Calling & Security
               </h4>
-              <p className="text-xs text-zinc-400">
-                Shows inter-contract invocation logs with the **Stellar Name Service (SNS)** contract. When you interact with this dApp (e.g. casting votes or registering candidates), it sends cross-contract requests to fetch verified user domain names (e.g., `user.stellar`).
+              <p className="text-sm text-[#aaaaaa]">
+                Shows inter-contract invocation logs with the **Stellar Name Service (SNS)** contract. When you interact with this dApp, it sends cross-contract requests to fetch verified user domain names (e.g., `user.stellar`).
               </p>
             </div>
 
             {/* List of mock oracle interactions */}
             <div className="space-y-2.5 max-h-[200px] overflow-y-auto pr-1">
               {oracleLog.length === 0 ? (
-                <div className="text-center py-10 bg-zinc-950/20 border border-zinc-850 border-dashed rounded-xl">
-                  <p className="text-xs text-zinc-500 font-medium">No external contract calls triggered yet.</p>
-                  <p className="text-[10px] text-zinc-650 mt-1">Submit a vote or register a candidate above to trigger instant inter-contract identity resolutions.</p>
+                <div className="text-center py-10 bg-black border-4 border-black">
+                  <p className="text-sm text-zinc-400 font-medium font-sans">No external contract calls triggered yet.</p>
+                  <p className="text-xs text-zinc-500 mt-1 max-w-sm mx-auto">Submit a vote or register a candidate above to trigger instant inter-contract identity resolutions.</p>
                 </div>
               ) : (
                 oracleLog.map((log, index) => (
-                  <div key={index} className="p-3 bg-zinc-950 border border-zinc-850 rounded-xl flex items-start justify-between gap-3 text-xs animate-fade-in">
+                  <div key={index} className="p-3 bg-[#1e1e1e] border-2 border-black flex items-start justify-between gap-3 text-xs animate-fade-in">
                     <div className="space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="px-1.5 py-0.5 bg-emerald-950 border border-emerald-900 text-[9px] text-emerald-400 rounded font-bold uppercase">
+                        <span className="mc-pixel-font text-[8px] text-[#5c9e31] px-1.5 py-0.5 bg-black border border-[#5c9e31]">
                           {log.status}
                         </span>
                         <span className="font-mono text-zinc-500 text-[10px]">{log.hash}</span>
                       </div>
-                      <p className="text-zinc-300 font-semibold">{log.action}</p>
+                      <p className="text-[#dddddd] font-semibold">{log.action}</p>
                     </div>
                     <span className="text-[10px] text-zinc-500 font-mono mt-0.5 shrink-0">{log.time}</span>
                   </div>

@@ -1,1 +1,205 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Press+Start+2P&family=VT323&display=swap');
+
+/* Web3 Minecraft Theme UI System */
+:root {
+  --mc-dark-gray: #2d2d2d;
+  --mc-gray: #4a4a4a;
+  --mc-light-gray: #8b8b8b;
+  --mc-border-dark: #0f0f0f;
+  --mc-shadow-dark: #1b1b1b;
+  --mc-highlight-light: #aeaeae;
+}
+
+body {
+  font-family: 'VT323', monospace;
+  font-size: 1.25rem;
+  background-color: #121212;
+  /* Minecraft deep stone pattern background */
+  background-image: 
+    radial-gradient(ellipse at center, rgba(16, 16, 16, 0.45) 0%, rgba(0, 0, 0, 0.95) 100%),
+    repeating-linear-gradient(0deg, #181818, #181818 2px, transparent 2px, transparent 10px),
+    repeating-linear-gradient(90deg, #1b1b1b, #1b1b1b 2px, #141414 2px, #141414 10px);
+  background-size: 100% 100%, 8px 8px, 8px 8px;
+  color: #e0e0e0;
+}
+
+/* Titles font */
+.mc-title {
+  font-family: 'Press Start 2P', monospace;
+  text-shadow: 3px 3px 0px #111;
+  font-size: 1.05rem;
+  letter-spacing: -1px;
+}
+
+/* Small pixel font */
+.mc-pixel-font {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.65rem;
+}
+
+/* Panel GUI box */
+.mc-gui-panel {
+  background-color: #2b2b2b;
+  border: 4px solid var(--mc-border-dark);
+  box-shadow: 
+    inset -4px -4px 0px #1a1a1a,
+    inset 4px 4px 0px #4d4d4d;
+  position: relative;
+  border-radius: 0px !important;
+}
+
+/* Dirt/Grass panel */
+.mc-dirt-panel {
+  background-color: #3b2c1e; /* dirt brown */
+  border: 4px solid var(--mc-border-dark);
+  border-top-color: #5c9e31; /* grass green top */
+  box-shadow: 
+    inset -4px -4px 0px #1d150e,
+    inset 4px 4px 0px #543f2a;
+  border-radius: 0px !important;
+}
+
+/* Diamond Panel */
+.mc-diamond-panel {
+  background-color: #172c2f;
+  border: 4px solid #111;
+  box-shadow: 
+    inset -4px -4px 0px #091517,
+    inset 4px 4px 0px #2bf3ff;
+  border-radius: 0px !important;
+}
+
+/* Redstone Panel */
+.mc-redstone-panel {
+  background-color: #231212;
+  border: 4px solid #111;
+  box-shadow: 
+    inset -4px -4px 0px #0f0707,
+    inset 4px 4px 0px #f52c2c;
+  border-radius: 0px !important;
+}
+
+/* Button GUI component */
+.mc-gui-btn {
+  font-family: 'Press Start 2P', monospace;
+  font-size: 0.65rem;
+  text-align: center;
+  color: #e0e0e0 !important;
+  text-shadow: 2px 2px 0px #222222;
+  background-color: #7a7a7a;
+  border: 4px solid #000;
+  box-shadow: 
+    inset -4px -4px 0px #4a4a4a, 
+    inset 4px 4px 0px #bebebe;
+  border-radius: 0px !important;
+  image-rendering: pixelated;
+  transition: all 0.05s ease;
+  user-select: none;
+  cursor: pointer;
+  padding: 10px 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mc-gui-btn:hover:not(:disabled) {
+  background-color: #53852c;
+  color: #ffff80 !important;
+  text-shadow: 2px 2px 0px #213c0f;
+  box-shadow: 
+    inset -4px -4px 0px #31521a, 
+    inset 4px 4px 0px #85dd47;
+}
+
+.mc-gui-btn:active:not(:disabled) {
+  box-shadow: 
+    inset 4px 4px 0px #31521a, 
+    inset -4px -4px 0px #85dd47;
+  padding-top: 12px;
+  padding-bottom: 8px;
+}
+
+.mc-gui-btn:disabled {
+  background-color: #444444;
+  color: #777777 !important;
+  text-shadow: 2px 2px 0px #181818;
+  box-shadow: 
+    inset -4px -4px 0px #2d2d2d, 
+    inset 4px 4px 0px #606060;
+  cursor: not-allowed;
+  opacity: 0.8;
+}
+
+/* Redstone Cancel button */
+.mc-gui-btn-red {
+  background-color: #932222;
+  box-shadow: 
+    inset -4px -4px 0px #531414, 
+    inset 4px 4px 0px #cb3a3a;
+}
+.mc-gui-btn-red:hover:not(:disabled) {
+  background-color: #b72525;
+  box-shadow: 
+    inset -4px -4px 0px #6c1616, 
+    inset 4px 4px 0px #e64d4d;
+  color: #ffffff !important;
+  text-shadow: 2px 2px 0px #420b0b;
+}
+.mc-gui-btn-red:active:not(:disabled) {
+  box-shadow: 
+    inset 4px 4px 0px #6c1616, 
+    inset -4px -4px 0px #e64d4d;
+}
+
+/* Input GUI text control */
+.mc-gui-input {
+  background-color: #0b0b0b !important;
+  color: #fff !important;
+  border: 4px solid #4a4a4a;
+  box-shadow: 
+    inset 4px 4px 0px #030303,
+    inset -4px -4px 0px #646464;
+  font-family: 'VT323', monospace;
+  font-size: 1.35rem;
+  border-radius: 0px !important;
+  padding: 8px 12px;
+}
+.mc-gui-input:focus {
+  border-color: #ffff80;
+  outline: none;
+}
+
+/* Splash Text style */
+.mc-splash-text {
+  color: #ffff00;
+  font-family: 'Press Start 2P', monospace;
+  text-shadow: 2px 2px 0px #3f3f00;
+  display: inline-block;
+  animation: mcSplashAnim 0.35s infinite alternate;
+}
+
+@keyframes mcSplashAnim {
+  from {
+    transform: scale(0.9) rotate(-8deg);
+  }
+  to {
+    transform: scale(1.05) rotate(-8deg);
+  }
+}
+
+/* Custom scrollbar to keep pixelated vibe */
+::-webkit-scrollbar {
+  width: 14px;
+  background-color: #1a1a1a;
+}
+::-webkit-scrollbar-thumb {
+  background-color: #3e3e3e;
+  border: 3px solid #1a1a1a;
+  box-shadow: inset 2px 2px 0px #5e5e5e, inset -2px -2px 0px #252525;
+}
+
+/* Utility to override modern classes */
+.mc-override {
+  border-radius: 0px !important;
+}

@@ -113,38 +113,37 @@ export default function App() {
     : false;
 
   return (
-    <div className="min-h-screen bg-zinc-950 text-zinc-100 flex flex-col font-sans" id="app-root">
-      {/* Decorative Top Accent Bar */}
-      <div className="h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-amber-500 w-full" />
+    <div className="min-h-screen text-zinc-100 flex flex-col select-none" id="app-root">
 
       {/* Header Banner */}
-      <header className="border-b border-zinc-900 bg-zinc-900/40 backdrop-blur-md sticky top-0 z-30" id="main-header">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-4">
+      <header className="border-b-4 border-black bg-[#2c2c2c] sticky top-0 z-30 shadow-md" id="main-header">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div className="flex items-center gap-3">
-            <div className="p-2.5 bg-indigo-950/80 border border-indigo-800 rounded-2xl text-indigo-400">
+            <div className="p-2 bg-[#1a1a1a] border-4 border-black text-[#5c9e31]">
               <Landmark className="w-8 h-8" />
             </div>
             <div>
-              <h1 className="text-xl font-bold text-zinc-100 tracking-tight flex items-center gap-2">
+              <h1 className="mc-title text-[#ffffff] flex flex-wrap items-center gap-2">
                 Stellar Soroban Voting Portal
+                <span className="mc-splash-text text-[11px] ml-2 text-yellow-300">SOROBAN!</span>
               </h1>
-              <p className="text-xs text-zinc-400 font-medium">Gas-optimized, secure voting platform powered by Soroban persistent state contracts.</p>
+              <p className="text-sm text-[#aaaaaa] font-medium leading-tight">Gas-optimized, secure voting platform powered by Soroban persistent state contracts.</p>
             </div>
           </div>
           
           <div className="flex items-center gap-3">
             {/* Ledger status badge */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-xl px-3.5 py-1.5 flex items-center gap-2 font-mono text-xs text-zinc-400">
-              <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse shrink-0" />
-              <span>Block #{sorobanSimulator.getLedgers()[0]?.sequence || '45812903'}</span>
+            <div className="mc-gui-panel px-3 py-1 flex items-center gap-2 mc-pixel-font text-[#ffaa00]">
+              <span className="w-2.5 h-2.5 bg-[#5c9e31] shrink-0 border-2 border-black animate-pulse" />
+              <span className="text-[10px]">Block #{sorobanSimulator.getLedgers()[0]?.sequence || '45812903'}</span>
             </div>
 
             <button
               onClick={handleResetSandbox}
-              className="px-3.5 py-1.5 bg-zinc-900 hover:bg-zinc-800 border border-zinc-800 hover:border-red-950 text-zinc-400 hover:text-red-400 text-xs font-semibold rounded-xl flex items-center gap-1.5 transition-all cursor-pointer"
+              className="mc-gui-btn mc-gui-btn-red py-2 px-3 flex items-center gap-1.5"
               title="Reset Simulated Blockchain State"
             >
-              <RefreshCw className="w-3.5 h-3.5" />
+              <RefreshCw className="w-3 h-3" />
               Reset State
             </button>
           </div>
@@ -161,22 +160,22 @@ export default function App() {
 
         {/* Dynamic Voting Window Alert Callout */}
         {votingConfig && (
-          <div className={`p-4 rounded-2xl border flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-sm ${
+          <div className={`p-4 border-4 border-black flex flex-col sm:flex-row sm:items-center justify-between gap-4 ${
             isWindowActive 
-              ? 'bg-emerald-950/20 border-emerald-900/60 text-emerald-300' 
+              ? 'bg-[#1b2b16] text-[#8ce25d]' 
               : currentLedgerTime < votingConfig.startTime
-                ? 'bg-amber-950/20 border-amber-900/60 text-amber-300'
-                : 'bg-red-950/20 border-red-900/60 text-red-300'
+                ? 'bg-[#2f2214] text-[#ffd666]'
+                : 'bg-[#2c1414] text-[#ff7a7a]'
           }`} id="voting-window-alert">
             <div className="flex items-start gap-3">
-              <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
+              <AlertCircle className="w-6 h-6 shrink-0 mt-0.5" />
               <div>
-                <span className="font-bold block text-sm">
+                <span className="mc-title block text-[#ffffff]">
                   {votingConfig.title}
                 </span>
-                <p className="text-xs text-zinc-350 mt-0.5">
+                <p className="text-md text-[#dddddd] mt-1 leading-normal">
                   {isWindowActive 
-                    ? "The election voting window is currently active. Cast your on-chain ballot below! Enforcing one-vote-per-wallet."
+                    ? "The election voting window is currently ACTIVE! Cast your on-chain ballot below. Enforcing one-vote-per-wallet rule."
                     : currentLedgerTime < votingConfig.startTime
                       ? `This contract's election window is scheduled. Transaction voting commands will panic until start time at ${new Date(votingConfig.startTime).toLocaleString()}.`
                       : "This election has ended. The persistent store has finalized all candidate counts, and any further vote execution is rejected."
@@ -195,45 +194,45 @@ export default function App() {
             
             {/* SECTION: On-Chain Candidates */}
             <div className="space-y-4" id="candidates-voting-hub">
-              <div className="flex justify-between items-center">
+              <div className="flex justify-between items-center bg-[#2c2c2c] border-4 border-black p-3 shadow-md">
                 <div>
-                  <h2 className="text-lg font-bold text-zinc-100 flex items-center gap-2">
-                    <VoteIcon className="w-5 h-5 text-indigo-400" />
+                  <h2 className="text-xl font-bold mc-title text-[#ffffff] flex items-center gap-2">
+                    <VoteIcon className="w-5 h-5 text-[#5c9e31]" />
                     Election Ballot Box
                   </h2>
-                  <p className="text-xs text-zinc-400">Review candidates and cryptographically sign your ballot.</p>
+                  <p className="text-sm text-[#aaaaaa]">Review candidates and cryptographically sign your ballot.</p>
                 </div>
-                <span className="text-xs font-mono text-zinc-500 bg-zinc-900 border border-zinc-800 px-2.5 py-1 rounded-md">
+                <span className="mc-pixel-font text-[10px] text-[#ffaa00] bg-[#1a1a1a] border-2 border-black px-2 py-0.5">
                   {candidates.length} candidates
                 </span>
               </div>
 
               {/* Vote Feed Status Alerts */}
               {voteError && (
-                <div className="p-4 bg-red-950/30 border border-red-800 text-red-200 rounded-xl flex items-start gap-3 text-xs animate-fade-in" id="tx-error-toast">
-                  <AlertCircle className="w-4 h-4 text-red-400 shrink-0 mt-0.5" />
+                <div className="p-4 bg-[#2c1414] border-4 border-[#a52a2a] text-[#ff7a7a] flex items-start gap-3 animate-fade-in" id="tx-error-toast">
+                  <AlertCircle className="w-5 h-5 shrink-0 mt-0.5" />
                   <div className="flex-1">
-                    <span className="font-bold block mb-0.5">Soroban Transaction Rejection</span>
-                    <p>{voteError}</p>
+                    <span className="mc-title block text-white mb-0.5">Soroban Error</span>
+                    <p className="text-sm">{voteError}</p>
                   </div>
                 </div>
               )}
 
               {voteSuccess && (
-                <div className="p-4 bg-emerald-950/30 border border-emerald-800 text-emerald-200 rounded-xl flex items-start gap-3 text-xs animate-fade-in" id="tx-success-toast">
-                  <CheckCircle2 className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
+                <div className="p-4 bg-[#1b2b16] border-4 border-[#5c9e31] text-[#8ce25d] flex items-start gap-3 animate-fade-in" id="tx-success-toast">
+                  <CheckCircle2 className="w-5 h-5 shrink-0 mt-0.5" />
                   <div className="flex-1">
-                    <span className="font-bold block mb-0.5">Transaction Sealed Successfully</span>
-                    <p>{voteSuccess}</p>
+                    <span className="mc-title block text-white mb-0.5">Transaction Sealed</span>
+                    <p className="text-sm">{voteSuccess}</p>
                   </div>
                 </div>
               )}
 
               {/* Candidates Grid */}
               {candidates.length === 0 ? (
-                <div className="text-center py-16 bg-zinc-900/40 border border-zinc-800 border-dashed rounded-2xl space-y-3">
-                  <p className="text-sm text-zinc-400 font-medium">No candidates are registered in the ledger state</p>
-                  <p className="text-xs text-zinc-500 max-w-xs mx-auto">Use the registration form below to append candidates to the smart contract.</p>
+                <div className="text-center py-16 mc-gui-panel space-y-3">
+                  <p className="text-lg text-zinc-400 font-medium font-sans">No candidates are registered in the ledger state</p>
+                  <p className="text-sm text-zinc-500 max-w-xs mx-auto">Use the registration form below to append candidates to the smart contract.</p>
                 </div>
               ) : (
                 <div className="space-y-4">
@@ -246,34 +245,32 @@ export default function App() {
                     return (
                       <div 
                         key={candidate.id} 
-                        className={`p-5 bg-zinc-900 border rounded-2xl transition-all flex flex-col justify-between gap-4 relative group ${
-                          isWindowActive && !walletVoted
-                            ? 'border-zinc-800 hover:border-zinc-700/80' 
-                            : 'border-zinc-800/60 opacity-85 hover:opacity-100'
+                        className={`p-5 mc-gui-panel transition-all flex flex-col justify-between gap-4 relative group ${
+                          isWindowActive && !walletVoted ? 'hover:border-[#5c9e31]' : 'opacity-85 hover:opacity-100'
                         }`}
                         id={`candidate-card-${candidate.id}`}
                       >
                         <div className="space-y-2">
                           <div className="flex items-start justify-between gap-2">
                             <div className="flex items-center gap-2">
-                              <span className="font-mono text-xs text-zinc-500 font-semibold px-2 py-0.5 bg-zinc-950 rounded border border-zinc-800/80">
+                              <span className="mc-pixel-font text-[9px] text-[#ffaa00] px-2 py-0.5 bg-[#151515] border-2 border-black">
                                 ID #{candidate.id}
                               </span>
-                              <h3 className="font-bold text-zinc-100 text-base group-hover:text-white transition-colors">{candidate.name}</h3>
+                              <h3 className="font-bold text-white text-xl">{candidate.name}</h3>
                             </div>
-                            <div className="text-right">
-                              <span className="text-xl font-mono font-extrabold text-zinc-100">{candidate.votes}</span>
-                              <span className="text-[10px] text-zinc-500 font-medium uppercase tracking-wider block">votes</span>
+                            <div className="text-right leading-none">
+                              <span className="text-2xl font-bold font-mono text-[#ffd666]">{candidate.votes}</span>
+                              <span className="text-[9px] mc-pixel-font text-zinc-500 block uppercase pt-0.5">votes</span>
                             </div>
                           </div>
                           
-                          <p className="text-sm text-zinc-300 leading-relaxed">{candidate.description}</p>
+                          <p className="text-md text-[#dddddd] leading-relaxed">{candidate.description}</p>
                         </div>
 
                         {/* Metadata block */}
-                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-t border-zinc-850/60 pt-4 gap-3 text-[11px] text-zinc-500 font-mono">
+                        <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between border-t border-[#1e1e1e] pt-4 gap-3 text-xs text-zinc-400 font-mono">
                           <span className="truncate max-w-[200px] sm:max-w-xs">
-                            Registered by: <span className="text-zinc-400">{truncateAddress(candidate.registeredBy)}</span>
+                            Registered by: <span className="text-zinc-350">{truncateAddress(candidate.registeredBy)}</span>
                           </span>
                           <span>
                             Date: {new Date(candidate.registeredAt).toLocaleDateString()}
@@ -285,22 +282,11 @@ export default function App() {
                           <button
                             onClick={() => handleCastVote(candidate.id)}
                             disabled={!isWindowActive || isTxPending || walletVoted || !connectedWallet}
-                            className={`w-full py-2.5 px-4 font-semibold text-xs rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2 ${
-                              walletVoted
-                                ? 'bg-zinc-800 border border-zinc-700 text-zinc-400'
-                                : !connectedWallet
-                                  ? 'bg-zinc-800/50 border border-zinc-800 text-zinc-500'
-                                  : isWindowActive
-                                    ? 'bg-indigo-600 hover:bg-indigo-500 text-zinc-100 font-bold shadow shadow-indigo-600/10'
-                                    : 'bg-zinc-800 border border-zinc-800 text-zinc-500'
-                            }`}
+                            className="w-full mc-gui-btn uppercase border-2 shadow-none font-bold py-3 mt-1"
                             id={`btn-vote-${candidate.id}`}
                           >
                             {isTxPending ? (
-                              <>
-                                <span className="w-3.5 h-3.5 border-2 border-zinc-300 border-t-transparent rounded-full animate-spin shrink-0" />
-                                Simulating Soroban VM Signature Auth...
-                              </>
+                              'Simulating Soroban VM Signature Auth...'
                             ) : walletVoted ? (
                               'Double Vote Protected (Already Voted)'
                             ) : !connectedWallet ? (
@@ -320,66 +306,63 @@ export default function App() {
             </div>
 
             {/* SECTION: Candidate Registration Form */}
-            <div className="bg-zinc-900 border border-zinc-800 rounded-2xl p-6 space-y-4" id="candidate-registration-panel">
-              <div className="flex items-center gap-2.5 border-b border-zinc-850 pb-3">
-                <PlusCircle className="w-5 h-5 text-indigo-400" />
+            <div className="mc-dirt-panel p-6 space-y-4" id="candidate-registration-panel">
+              <div className="flex items-center gap-2.5 border-b border-[#0f0f0f] pb-3.5">
+                <PlusCircle className="w-6 h-6 text-[#5c9e31]" />
                 <div>
-                  <h3 className="text-base font-bold text-zinc-100">Register On-Chain Candidate</h3>
-                  <p className="text-xs text-zinc-400">Append a candidate. Consumes 0.1 XLM in Soroban storage fees.</p>
+                  <h3 className="mc-title text-[#ffffff]">Register On-Chain Candidate</h3>
+                  <p className="text-sm text-[#aaaaaa]">Append a candidate. Consumes 0.1 XLM in Soroban storage fees.</p>
                 </div>
               </div>
 
               {/* Status messages */}
               {registerError && (
-                <div className="p-3 bg-red-950/30 border border-red-800 text-red-200 rounded-xl text-xs flex gap-2">
-                  <AlertCircle className="w-4 h-4 text-red-400 shrink-0" />
+                <div className="p-3 bg-[#2d1414] border-4 border-[#a52a2a] text-[#ff7a7a] text-sm flex gap-2">
+                  <AlertCircle className="w-5 h-5 shrink-0" />
                   <p>{registerError}</p>
                 </div>
               )}
 
               {registerSuccess && (
-                <div className="p-3 bg-emerald-950/30 border border-emerald-800 text-emerald-200 rounded-xl text-xs flex gap-2">
-                  <Sparkles className="w-4 h-4 text-emerald-400 shrink-0" />
+                <div className="p-3 bg-[#1b2b16] border-4 border-[#5c9e31] text-[#8ce25d] text-sm flex gap-2">
+                  <Sparkles className="w-5 h-5 shrink-0" />
                   <p>Success! New candidate has been registered in the contract storage instance.</p>
                 </div>
               )}
 
               <form onSubmit={handleRegisterCandidate} className="space-y-4">
                 <div>
-                  <label className="text-xs font-semibold text-zinc-400 block mb-1">Candidate / Campaign Title</label>
+                  <label className="text-sm font-semibold text-zinc-300 block mb-1">Candidate / Campaign Title</label>
                   <input
                     type="text"
                     placeholder="e.g. Validator Node Incentive Fund"
                     value={candidateName}
                     onChange={(e) => setCandidateName(e.target.value)}
                     disabled={isRegistering}
-                    className="w-full p-2.5 bg-zinc-950 border border-zinc-850 rounded-xl text-xs text-zinc-100 font-semibold focus:outline-none focus:border-indigo-500 transition-colors"
+                    className="w-full mc-gui-input"
                   />
                 </div>
 
                 <div>
-                  <label className="text-xs font-semibold text-zinc-400 block mb-1">Proposal Campaign Description</label>
+                  <label className="text-sm font-semibold text-zinc-300 block mb-1">Proposal Campaign Description</label>
                   <textarea
                     placeholder="e.g. Distribute XLM treasury balances to validators meeting performance guidelines..."
                     rows={3}
                     value={candidateDesc}
                     onChange={(e) => setCandidateDesc(e.target.value)}
                     disabled={isRegistering}
-                    className="w-full p-2.5 bg-zinc-950 border border-zinc-850 rounded-xl text-xs text-zinc-100 focus:outline-none focus:border-indigo-500 transition-colors resize-none"
+                    className="w-full mc-gui-input resize-none"
                   />
                 </div>
 
                 <button
                   type="submit"
                   disabled={isRegistering || !connectedWallet}
-                  className="w-full py-2.5 bg-zinc-100 hover:bg-zinc-200 disabled:bg-zinc-800/50 disabled:text-zinc-650 text-zinc-950 text-xs font-bold rounded-xl transition-all cursor-pointer flex items-center justify-center gap-2"
+                  className="w-full mc-gui-btn uppercase border-2 shadow-none font-bold py-3 mt-1"
                   id="btn-register-candidate"
                 >
                   {isRegistering ? (
-                    <>
-                      <span className="w-3.5 h-3.5 border-2 border-zinc-950 border-t-transparent rounded-full animate-spin shrink-0" />
-                      Invoking register_candidate()...
-                    </>
+                    'Invoking register_candidate()...'
                   ) : !connectedWallet ? (
                     'Connect Wallet to Register Candidate'
                   ) : (
@@ -416,11 +399,11 @@ export default function App() {
       </main>
 
       {/* Footer */}
-      <footer className="border-t border-zinc-900 bg-zinc-950 py-8 mt-12 text-center text-xs text-zinc-500" id="main-footer">
+      <footer className="border-t-4 border-black bg-[#151515] py-8 mt-12 text-center text-sm text-[#888888]" id="main-footer">
         <div className="max-w-7xl mx-auto px-4 space-y-2">
-          <p className="font-semibold text-zinc-400">Soroban Voting dApp — Interactive Sandbox & Explorer Client</p>
+          <p className="font-semibold text-zinc-350">Soroban Voting dApp — Interactive Sandbox & Explorer Client</p>
           <p>Running on Mock Stellar Testnet. In-app RPC updates emulate the Soroban Virtual Machine ledger clock constraints.</p>
-          <p className="text-[10px] text-zinc-650 pt-2 border-t border-zinc-900 max-w-md mx-auto">
+          <p className="text-xs text-zinc-550 pt-2 border-t border-[#222222] max-w-md mx-auto">
             This client simulates cryptographic wallet connection signatures, Friendbot faucet injections, and contract gas calculations (RAM/CPU instruction limits).
           </p>
         </div>
