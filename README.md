@@ -26,7 +26,7 @@ The repository features two **Rust Soroban Smart Contracts** (a Voting contract 
 | Screenshot: desktop UI layout | ✅ | [`./screenshots/desktop-ui.png`](./screenshots/desktop-ui.png) |
 | Screenshot: CI/CD pipeline running | ☐ | `./screenshots/ci-pipeline.png` *(Add file to `/screenshots` to render inline)* |
 | Screenshot: test output, 3+ passing tests | ☐ | `./screenshots/test-output.png` *(Add file to `/screenshots` to render inline)* |
-| Demo video link (1–2 minutes) | ✅ | [Google Drive Demo Video](https://drive.google.com/drive/u/0/home) |
+| Demo video link (1–2 minutes) | ✅ | [https://drive.google.com/file/d/1jMlNINqj1FIKEjn6wgz4yvjRd4zMn0Zk/view?usp=sharing] |
 
 ---
 
@@ -290,7 +290,7 @@ To deploy your own fork:
 
 ## 🎥 Demo Video
 
-[![Demo Video Placeholder](https://img.shields.io/badge/Demo--Video-Watch%20Walkthrough-red?style=for-the-badge&logo=youtube)](https://drive.google.com/drive/u/0/home)
+[![Demo Video Placeholder]([https://img.shields.io/badge/Demo--Video-Watch%20Walkthrough-red?style=for-the-badge&logo=youtube](https://drive.google.com/file/d/1jMlNINqj1FIKEjn6wgz4yvjRd4zMn0Zk/view?usp=sharing))](https://drive.google.com/drive/u/0/home)
 
 > **Video Walkthrough Guide (1–2 minutes)**:
 > 1. **Wallet Connection**: Show connecting with Freighter wallet and fetching testnet XLM balance.
