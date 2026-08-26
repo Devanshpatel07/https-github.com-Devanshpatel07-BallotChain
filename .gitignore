@@ -1,0 +1,26 @@
+# dependencies
+node_modules
+client/node_modules
+
+# build outputs
+out
+dist
+.next
+client/.next
+target
+contract/target
+*.tgz
+
+# logs
+logs
+*.log
+
+# dotenv
+.env
+.env*.local
+
+# caches & OS
+.eslintcache
+.cache
+.DS_Store
+Thumbs.db
